@@ -189,18 +189,19 @@ namespace MultiThread
                 file.Close();
             }*/
  
-            for(int i = 0; i < 9; ++i)
-            {
-                memInstruc[i] = int.Parse(Console.ReadLine());
-            }
+            memInstruc[0] = 8;
+            memInstruc[1] = 2;
+            memInstruc[2] = 2;
+            memInstruc[3] = 2;
+            memInstruc[4] = 63;     // SE DEBEN RESERVAR LOS 4 ESPACIOS EN LA MEMORIA DE INSTUCCIONES SIEMPRE
             cola.Encolar(0);
 
-            Console.Write("Segundo hilo");
-            for (int i = 9; i < 18; ++i)
-            {
-                memInstruc[i] = int.Parse(Console.ReadLine());
-            }
-            cola.Encolar(9);
+            memInstruc[8] = 8;
+            memInstruc[9] = 3;
+            memInstruc[10] = 3;
+            memInstruc[11] = 3;
+            memInstruc[12] = 63;
+            cola.Encolar(8);
 
             //*****************Leer archivo termina aqui*********************////
 
