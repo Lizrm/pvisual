@@ -132,7 +132,7 @@ namespace MultiThread
 
             }*/
 
-            for (int i = 0; i < 8; ++i)
+            for (int i = 0; i < 9; ++i)
             {
                 memInstruc[i] = int.Parse(Console.ReadLine());
             }
@@ -883,6 +883,7 @@ namespace MultiThread
             while (0 < contador)
             {
                 Contexto aux = (Contexto)queue.Dequeue();
+                contador--;
                 Console.WriteLine("PC: \t" + aux.pc + "\nReloj CPU: \t" + aux.relojCPU + "\nReloj Total: \t" + aux.relojTotal);
                 for (int i = 1; i < 32; ++i)
                 {
