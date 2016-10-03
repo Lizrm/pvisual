@@ -49,7 +49,7 @@ namespace MultiThread
 
         static void Main()
         {
-            Console.WriteLine("Hello World!"); //Escribir en consola
+           // Console.WriteLine("Hello World!"); //Escribir en consola
 
             //**Bloque de creacion**//
 
@@ -101,9 +101,9 @@ namespace MultiThread
             }
             //*****************Fin de Bloque*************************//
 
-            Console.Write("Ingrese el quantum");
+            Console.Write("Ingrese el quantum\n");
             quantumTotal = int.Parse(Console.ReadLine());
-            Console.Write("\nIngrese el numero de hilillos Totales");
+            Console.Write("\nIngrese el numero de hilillos Totales\n");
             total = int.Parse(Console.ReadLine());
 
             /*int indice = 0;
@@ -138,12 +138,12 @@ namespace MultiThread
             }
             cola.Encolar(0);
 
-            Console.Write("Segundo hilo");
-            for (int i = 0; i < 9; ++i)
+            Console.Write("Segundo hilo \n");
+            for (int i = 9; i < 18; ++i)
             {
                 memInstruc[i] = int.Parse(Console.ReadLine());
             }
-            cola.Encolar(8);
+            cola.Encolar(9);
 
             //*****************Leer archivo termina aqui*********************////
 
@@ -229,6 +229,7 @@ namespace MultiThread
                     cacheInstruc[i][j] = -1;
                 }
             }
+            PC = -1;
             //**************Fin bloque inicilaizacion****************//
             Console.WriteLine("entra al hilo");
             while (true)//while que no deja que los hilos mueran
@@ -284,8 +285,8 @@ namespace MultiThread
 
                 cpu = 0;
                 inicioReloj = reloj;
-                cola.Sacar(out PC, ref reg, ref cpu);
-
+                cola.Sacar(ref PC, ref reg, ref cpu);
+                Console.WriteLine("Se saco PC: " + PC);
                 Monitor.Exit(cola);
                 quantum = q;
 
@@ -846,7 +847,7 @@ namespace MultiThread
 
         }//FIN de Guardar
 
-        public void Sacar(out int p, ref int[] reg, ref int relojActual)//Retorna el contexto
+        public void Sacar(ref int p, ref int[] reg, ref int relojActual)//Retorna el contexto
         {
             Contexto aux = (Contexto)queue.Dequeue();
             for (int i = 1; i < 32; ++i)
