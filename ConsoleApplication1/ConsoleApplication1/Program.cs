@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.IO;
 
@@ -11,27 +11,27 @@ namespace MultiThread
     class Procesador
     {
 
-        public static int[] memDatos;             // cache de datos (cada nucleo tiene una propia)
-        public static int[] memInstruc;           // cache de instrucciones (cada nucleo tiene una propia)
-        public static Contextos cola;            // para poder cambiar de contexto entre hilillos
-        public static Contextos finalizados;    //Guarda el estado de los registros y las cache en la que termino el hilillo
-        public static int total;                  //Total de hilillos
-        public static int reloj;                   //Variable general del reloj
-        public static int quantumTotal;           //Variable compartida, solo de lectura, no debe ser modificada por los hilos
-        public static int[,] cacheDatos3;      //4 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
-        public static int[,] cacheDatos2;      //4 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
-        public static int[,] cacheDatos1;      //4 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
-        public static int[] RL1;
+        public static int[] memDatos;             // Cache de datos (cada nucleo tiene una propia)
+        public static int[] memInstruc;           // Cache de instrucciones (cada nucleo tiene una propia)
+        public static Contextos cola;             // Cola para poder cambiar de contexto entre hilillos, contiene PC, regitsros y contador de ciclos de reloj
+        public static Contextos finalizados;      // Guarda el estado de los registros y las cache en la que termino el hilillo
+        public static int total;                  // Total de hilillos
+        public static int reloj;                  // Variable general del reloj
+        public static int quantumTotal;           // Variable compartida, solo de lectura, no debe ser modificada por los hilos
+        public static int[,] cacheDatos3;         // 4 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
+        public static int[,] cacheDatos2;         // 4 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
+        public static int[,] cacheDatos1;         // 4 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
+        public static int[] RL1;                  // Registros RL (globales)
         public static int[] RL2;
         public static int[] RL3;
-        public static int[] busD;
-        public static int[] busI;
-        public static int llegan = 4;
+        public static int[] busD;                 // Bus de datos
+        public static int[] busI;                 // Bus de instrucciones
+        public static int llegan = 4;             // Variable para el uso de la barrera
 
         static Barrier barrier = new Barrier(llegan, (bar) =>  //Barrera de sincronizacion, lo que esta dentro se ejecuta una sola vez
         {
             reloj++;
-            // Console.WriteLine("Tic de reloj");
+           // Console.WriteLine("Tic de reloj");
         }); //FIN de la Barrera
 
         static public void TicReloj()
@@ -39,30 +39,28 @@ namespace MultiThread
             barrier.SignalAndWait();
         }//FIN de TicReloj
 
-        static public void FallodeCache(int ciclos) //Se encicla los tick de reloj dependiendo que la instruccion ejecutando
+        static public void FallodeCache(int ciclos)     // Se encicla los tick de reloj dependiendo que la instruccion que se esta ejecutando
         {
-            for (int i = 0; i < ciclos; ++i) //Simulacion de que un fallo de cache
+            for (int i = 0; i < ciclos; ++i)            // Simulacion de que un fallo de cache
             {
-                TicReloj();       //tic de reloj
+                TicReloj();                             // Tick de reloj
             }
         }//FIN de Fallo de Cache
 
         static void Main()
         {
-           // Console.WriteLine("Hello World!"); //Escribir en consola
-
             //**Bloque de creacion**//
 
-            memDatos = new int[96]; // 384/4
-            memInstruc = new int[640]; // 40 bloques * 4 *4
+            memDatos = new int[96];         // 384/4
+            memInstruc = new int[640];      // 40 bloques * 4 *4
             cola = new Contextos();
             finalizados = new Contextos();
 
-            RL1 = new int[1];
+            RL1 = new int[1];               // Inicializacion de resgistros RL
             RL2 = new int[1];
             RL3 = new int[1];
-            busD = new int[1];
-            busI = new int[1];
+            busD = new int[1];              // Inicializacion del Bus de Datos
+            busI = new int[1];              // Inicializacion del Bus de Instrucciones
 
             cacheDatos1 = new int[6, 4]; //Preguntar si es recomendable recorrerlas por filas
             cacheDatos2 = new int[6, 4];
@@ -71,17 +69,17 @@ namespace MultiThread
 
             //*************Bloque de inicializacion******************//
             reloj = 0;
-            for (int i = 0; i < 96; ++i) // memoria principal inicilizada en uno
+            for (int i = 0; i < 96; ++i)    // Memoria principal inicilizada en uno
             {
                 memDatos[i] = 1;
                 memInstruc[i] = 1;
             }
-            for (int i = 96; i < 640; ++i) // memoria principal inicilizada en uno
+            for (int i = 96; i < 640; ++i)   // Memoria principal inicilizada en uno
             {
                 memInstruc[i] = 1;
             }
 
-            for (int i = 0; i < 4; ++i) //las caches se inicializadas en cero
+            for (int i = 0; i < 4; ++i)     // Las caches se inicializadas en cero
             {
                 for (int j = 0; j < 4; ++j)
                 {
@@ -90,7 +88,7 @@ namespace MultiThread
                     cacheDatos1[i, j] = 0;
                 }
             }
-            for (int i = 4; i < 6; ++i) //las caches se inicializadas en invalidas
+            for (int i = 4; i < 6; ++i)     // Las caches se inicializadas en invalidas
             {
                 for (int j = 0; j < 4; ++j)
                 {
@@ -101,44 +99,103 @@ namespace MultiThread
             }
             //*****************Fin de Bloque*************************//
 
-            Console.Write("Ingrese el quantum\n");
+            Console.Write("Ingrese el quantum \n");
             quantumTotal = int.Parse(Console.ReadLine());
-            Console.Write("\nIngrese el numero de hilillos Totales\n");
-            total = int.Parse(Console.ReadLine());
-
-            /*int indice = 0;
-            int counter = 0;
+            Console.Write("\nIngrese el numero de hilillos Totales \n");
+            total = int.Parse(Console.ReadLine());                      // Total tiene el numero total de archivos a leer
+                                                                        //Los archivos se deben de numerar a partir de cero
+            /*
+            int indice = 0;
             string linea;
             for (int j = 0; j < total; ++j)
             {
-                //obtener archivo
+                // Obtener archivo
                 cola.Encolar(indice); //Solo agrega el PC para iniciar las intrucciones
-
-
-                // Read the file and display it line by line.
-                System.IO.StreamReader file = new System.IO.StreamReader(@"c:\test.txt");
-                while ((line = file.ReadLine()) != null)
+                // Leer archivo linea por linea
+                System.IO.StreamReader file = new System.IO.StreamReader(@"c:\"+j+".txt"); //NO ESTOY SEGURA DE ESTO LO TOME DE https://msdn.microsoft.com/es-es/library/ms228504.aspx
+                while ((linea = file.ReadLine()) != null)
                 {
-                    linea
-
-
-                    counter++;
+                     int b=0;
+                     char[] aux = new char[linea.Length];
+                     for (int a= 0; a=linea.Length; a++ )
+                     {
+                         using (StringReader sr = new StringReader(linea))
+                        {
+                            // Se lee caracter a caracter y se almacena en aux
+                            sr.Read(aux[b], a, 1);
+                            b++;
+                        }
+                         
+                     }
+                     // En este punto en aux tengo la linea almacenada caracter por caracter
+                    int acumulador;     // Para saber cuantos numeros hay antes del espacio
+                    int nav;            // Para recorrido en reversa que concatene cada parte de la instruccion
+                    int parte;          // Para almacenar parte de la instruccion ya concatenada para pasar a Memoria de instrucciones
+                    parte=0;
+                     for (int c= 0; c=aux.Length; c++ )
+                     {
+                         if(aux[c] != ' ')// Si lo que hay en el arreglo es un espacio ASCII 32
+                         {   
+                         c++
+                         } else             // Si se encuentra un espacio se debe de concatenar la cantidad para meterla en las instrucciones
+                         { 
+                             nav=c;
+                             nav--;
+                             acumulador=0;
+                             while ((aux[nav]!= ' ') && (nav!=0))// Recorrer en reversa para encontrar el espacio anterior al encontrado con c
+                             { 
+                                 nav --;
+                                 acumulador ++; //Para poder multiplicar por 1, 10, 100 o 1000
+                             }
+                             if(nav==0)
+                             {
+                                 acumulador++;
+                                 nav--;
+                             }
+                            nav++; // Para que quede en la posicion siguiente al espacio encontrado
+                            while (nav<= c))
+                            {
+                                if(acumulador==1)
+                                {
+                                    parte+=(aux[nav]-48);
+                                    acumulador--;
+                                    nav++;
+                                }
+                                if(acumulador==2)
+                                {
+                                    parte+=(aux[nav]-48)*10;
+                                    acumulador--;
+                                    nav++;
+                                }
+                                if(acumulador==3)
+                                {
+                                    parte+=(aux[nav]-48)*100;
+                                    acumulador--;
+                                    nav++;
+                                }
+                                if(acumulador==4)
+                                {
+                                    parte+=(aux[nav]-48)*1000;
+                                    acumulador--;
+                                    nav++;
+                                }
+                            } //FIN DE CONCATENACION
+                        // lo que esta en parte se puede meter en la memoria principal de instrucciones en este momento
+                         }// FIN DEL ESPACIO ENCONTRADO
+                     }//FIN DE LA LINEA
                 }
-
+                
+                
                 file.Close();
-                System.Console.WriteLine("There were {0} lines.", counter);
-                // Suspend the screen.
-                System.Console.ReadLine();
-
-            }*/
-
-            for (int i = 0; i < 9; ++i)
+            }*//
+ 
+            for(int i = 0; i < 9; ++i)
             {
                 memInstruc[i] = int.Parse(Console.ReadLine());
             }
             cola.Encolar(0);
 
-            Console.Write("Segundo hilo \n");
+            Console.Write("Segundo hilo");
             for (int i = 9; i < 18; ++i)
             {
                 memInstruc[i] = int.Parse(Console.ReadLine());
@@ -176,7 +233,7 @@ namespace MultiThread
                     TicReloj();
                     cardinalidad = finalizados.Cantidad();
                     Monitor.Exit(finalizados);
-                }
+                }               
             }
 
             //Finaliza los 3 hilos que emulan los nucleos               //Preguntar, depues de matar los hilos, debo segui dando tic de reloj??
@@ -184,7 +241,7 @@ namespace MultiThread
             thread2.Abort();
             thread3.Abort();
 
-            finalizados.Imprimir();
+           finalizados.Imprimir();
 
         }//FIN de Main
 
@@ -229,13 +286,12 @@ namespace MultiThread
                     cacheInstruc[i][j] = -1;
                 }
             }
-            PC = -1;
             //**************Fin bloque inicilaizacion****************//
             Console.WriteLine("entra al hilo");
             while (true)//while que no deja que los hilos mueran
             {
                 bool vacia = true;
-                while (vacia)
+                while(vacia)
                 {
                     while (!Monitor.TryEnter(cola))
                     {
@@ -247,7 +303,7 @@ namespace MultiThread
                         vacia = false;
                     }
                 }
-
+                
                 Console.WriteLine("Consigue la cola");
                 switch (int.Parse(Thread.CurrentThread.Name)) //RL
                 {
@@ -282,17 +338,17 @@ namespace MultiThread
                         Monitor.Exit(RL3);
                         break;
                 }
-
+                
                 cpu = 0;
                 inicioReloj = reloj;
-                cola.Sacar(ref PC, ref reg, ref cpu);
-                Console.WriteLine("Se saco PC: " + PC);
+                cola.Sacar(out PC, ref reg, ref cpu);
+
                 Monitor.Exit(cola);
                 quantum = q;
 
                 while (quantum > 0)
                 {
-
+                 
                     /**************************/
                     bloque = PC / 16;  //calculo el bloque
                     posicion = bloque % 4;    //posicion en cache
@@ -310,16 +366,16 @@ namespace MultiThread
                         cacheInstruc[4][posicion] = bloque;
                         cacheInstruc[5][posicion] = 1;
 
-
+                        
                         inicioBloque = (bloque * 16);// - 384;// bloque de instrucciones
                         for (int i = 0; i < 4; ++i)
                         {
                             iterador = posicion * 4;
                             for (int j = 0; j < 4; ++j)
                             {
-                                cacheInstruc[i][iterador] = memInstruc[inicioBloque];
+                                cacheInstruc[i][iterador] = memInstruc[inicioBloque];                              
                                 ++inicioBloque;
-                                ++iterador;
+                                ++iterador;                       
                             }
                         }
                         FallodeCache(28);
@@ -337,7 +393,7 @@ namespace MultiThread
                     switch (cop) //cop es el codigo de operacion 		// se deben verificar que el registro destino no sea cero 
                     {
                         case 8: //DADDI rf1 <------- rf2 + inm
-
+                            
                             reg[rf1] = reg[rf2] + rd;
                             break;
 
@@ -805,7 +861,7 @@ namespace MultiThread
             {
                 pc = p;
                 relojCPU = 0;
-                relojTotal = 0;
+                relojTotal = 0;           
                 regist = new int[32];
                 for (int i = 1; i < 32; ++i)
                 {
@@ -847,7 +903,7 @@ namespace MultiThread
 
         }//FIN de Guardar
 
-        public void Sacar(ref int p, ref int[] reg, ref int relojActual)//Retorna el contexto
+        public void Sacar(out int p, ref int[] reg, ref int relojActual)//Retorna el contexto
         {
             Contexto aux = (Contexto)queue.Dequeue();
             for (int i = 1; i < 32; ++i)
@@ -881,7 +937,7 @@ namespace MultiThread
 
         public void Imprimir()
         {
-            while (0 < contador)
+            while(0 < contador)
             {
                 Contexto aux = (Contexto)queue.Dequeue();
                 contador--;
@@ -890,9 +946,9 @@ namespace MultiThread
                 {
                     Console.WriteLine("reg[" + i + "]= \t" + aux.regist[i]);
                 }
-                string t = Console.ReadLine();
-            }
-
+                string t = Console.ReadLine();    
+                }
+            
         }
 
     }//FIN de la clase Contextos
