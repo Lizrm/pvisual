@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.IO;
 
+
+/*****/
 //Contextos
 using System.Threading.Tasks;
 using System.Collections;
@@ -102,93 +104,33 @@ namespace MultiThread
             Console.Write("Ingrese el quantum \n");
             quantumTotal = int.Parse(Console.ReadLine());
             Console.Write("\nIngrese el numero de hilillos Totales \n");
-            total = int.Parse(Console.ReadLine());                      // Total tiene el numero total de archivos a leer
-                                                                        //Los archivos se deben de numerar a partir de cero
-            /*
-            int indice = 0;
-            string linea;
-            for (int j = 0; j < total; ++j)
+            total = int.Parse(Console.ReadLine());
+            int index = 0;
+            Char delimiter = ' ';
+
+            for (int i = 0; i < total; ++i) 
             {
-                // Obtener archivo
-                cola.Encolar(indice); //Solo agrega el PC para iniciar las intrucciones
-                // Leer archivo linea por linea
-                System.IO.StreamReader file = new System.IO.StreamReader(@"c:\"+j+".txt"); //NO ESTOY SEGURA DE ESTO LO TOME DE https://msdn.microsoft.com/es-es/library/ms228504.aspx
-                while ((linea = file.ReadLine()) != null)
+                cola.Encolar(index);
+                string[] lines = File.ReadAllLines(i +".txt");   
+
+                foreach(string line in lines)
                 {
-                     int b=0;
-                     char[] aux = new char[linea.Length];
-                     for (int a= 0; a=linea.Length; a++ )
-                     {
-                         using (StringReader sr = new StringReader(linea))
-                        {
-                            // Se lee caracter a caracter y se almacena en aux
-                            sr.Read(aux[b], a, 1);
-                            b++;
-                        }
-                         
-                     }
-                     // En este punto en aux tengo la linea almacenada caracter por caracter
-                    int acumulador;     // Para saber cuantos numeros hay antes del espacio
-                    int nav;            // Para recorrido en reversa que concatene cada parte de la instruccion
-                    int parte;          // Para almacenar parte de la instruccion ya concatenada para pasar a Memoria de instrucciones
-                    parte=0;
-                     for (int c= 0; c=aux.Length; c++ )
-                     {
-                         if(aux[c] != ' ')// Si lo que hay en el arreglo es un espacio ASCII 32
-                         {   
-                         c++
-                         } else             // Si se encuentra un espacio se debe de concatenar la cantidad para meterla en las instrucciones
-                         { 
-                             nav=c;
-                             nav--;
-                             acumulador=0;
-                             while ((aux[nav]!= ' ') && (nav!=0))// Recorrer en reversa para encontrar el espacio anterior al encontrado con c
-                             { 
-                                 nav --;
-                                 acumulador ++; //Para poder multiplicar por 1, 10, 100 o 1000
-                             }
-                             if(nav==0)
-                             {
-                                 acumulador++;
-                                 nav--;
-                             }
-                            nav++; // Para que quede en la posicion siguiente al espacio encontrado
-                            while (nav<= c))
-                            {
-                                if(acumulador==1)
-                                {
-                                    parte+=(aux[nav]-48);
-                                    acumulador--;
-                                    nav++;
-                                }
-                                if(acumulador==2)
-                                {
-                                    parte+=(aux[nav]-48)*10;
-                                    acumulador--;
-                                    nav++;
-                                }
-                                if(acumulador==3)
-                                {
-                                    parte+=(aux[nav]-48)*100;
-                                    acumulador--;
-                                    nav++;
-                                }
-                                if(acumulador==4)
-                                {
-                                    parte+=(aux[nav]-48)*1000;
-                                    acumulador--;
-                                    nav++;
-                                }
-                            } //FIN DE CONCATENACION
-                        // lo que esta en parte se puede meter en la memoria principal de instrucciones en este momento
-                         }// FIN DEL ESPACIO ENCONTRADO
-                     }//FIN DE LA LINEA
-                }
-                
-                
-                file.Close();
-            }*/
- 
+                    string[] substrings = line.Split(delimiter);    //Se recortan los espacios en blanco
+
+                    foreach(var subestring in substrings)
+                    {
+                        memInstruc[index] = int.Parse(subestring);
+                        ++index;
+                    }                        
+                }                
+            }
+            
+            for(int i = 0; i < 12; ++i) 
+            {
+                Console.Write(memInstruc[i]+ "\n");
+            }
+            Console.ReadKey();
+
             memInstruc[0] = 8;
             memInstruc[1] = 2;
             memInstruc[2] = 2;
