@@ -113,7 +113,7 @@ namespace MultiThread
             for (int i = 0; i < total; ++i) 
             {
                 cola.Encolar(index);
-                string[] lines = File.ReadAllLines(i +".txt");   
+                string[] lines = File.ReadAllLines(i +".txt");   //Funciona si los archivos estan en bin, hay que cambiarlo
 
                 foreach(string line in lines)
                 {
@@ -129,7 +129,7 @@ namespace MultiThread
             /******Fin leer de archivos*******/
 
 
-            for(int i = 0; i < 12; ++i) 
+            for(int i = 0; i < 12*4; ++i) 
             {
                 Console.Write(memInstruc[i]+ "\n");
             }
@@ -256,7 +256,6 @@ namespace MultiThread
                 Console.WriteLine("Consigue la cola");
                 switch (int.Parse(Thread.CurrentThread.Name)) //RL
                 {
-
                     case 1:
                         while (!Monitor.TryEnter(RL1))
                         {
@@ -342,32 +341,38 @@ namespace MultiThread
                     switch (cop) //cop es el codigo de operacion 		// se deben verificar que el registro destino no sea cero 
                     {
                         case 8: //DADDI rf1 <------- rf2 + inm
-                            
-                            reg[rf1] = reg[rf2] + rd;
+
+                            Console.WriteLine("Hace caso 8: DADDI");
+                           reg[rf1] = reg[rf2] + rd;
                             break;
 
                         case 32: //DADD rd <------ rf1 + rf2
 
+                            Console.WriteLine("Hace caso 32: DADD");
                             reg[rd] = reg[rf1] + reg[rf2];
                             break;
 
                         case 34: //DSUB  rd <------- rf1 - rf2
 
+                            Console.WriteLine("Hace caso 34: DSUB");
                             reg[rd] = reg[rf1] - reg[rf2];
                             break;
 
                         case 12: //DMUL  rd <------ rf1 * rf2
 
+                            Console.WriteLine("Hace caso 12: DMUL");
                             reg[rd] = reg[rf1] * reg[rf2];
                             break;
 
                         case 14: //DIV  rd <------ rf1 / rf2
 
+                            Console.WriteLine("Hace caso 14: DIV");
                             reg[rd] = reg[rf1] / reg[rf2];
                             break;
 
                         case 4: //BEZ si rf = 0 entonces SALTA
 
+                            Console.WriteLine("Hace caso 4: BEZ");
                             if (reg[rf1] == reg[0])
                             {
                                 PC += (rd * 4);
@@ -376,6 +381,7 @@ namespace MultiThread
 
                         case 5: //BNEZ si rf z 0 o rf > 0 entonces SALTA
 
+                            Console.WriteLine("Hace caso 5: BNEZ");
                             if (reg[rf1] < reg[0] || reg[rf1] > reg[0]) //PUEDO cambiar esto por un != de cero
                             {
                                 PC += (rd * 4);
@@ -384,6 +390,7 @@ namespace MultiThread
 
                         case 3: //JAL  reg 31 = PC
 
+                            Console.WriteLine("Hace caso 3: JAL");
                             reg[31] = PC;
                             PC += rd;   //  PC = PC + inm;
 
@@ -391,6 +398,7 @@ namespace MultiThread
 
                         case 2:  //JR  PC = rf1
 
+                            Console.WriteLine("Hace caso 2: JR");
                             PC = reg[rf1];
                             break;
 
@@ -404,6 +412,7 @@ namespace MultiThread
 
                         case 35: //LW
 
+                            Console.WriteLine("Hace caso 35: LW");
                             int dir = rf1 + rd;
                             bloque = dir / 16;
                             posicion = bloque % 4;
@@ -530,6 +539,8 @@ namespace MultiThread
                             break;
 
                         case 43: //SW
+
+                            Console.WriteLine("Hace caso 43: SW");
                             int direccion = rf1 + rd;
                             bloque = direccion / 16;
                             posicion = bloque % 4;
