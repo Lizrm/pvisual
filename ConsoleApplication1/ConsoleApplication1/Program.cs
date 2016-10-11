@@ -105,6 +105,8 @@ namespace MultiThread
             quantumTotal = int.Parse(Console.ReadLine());
             Console.Write("\nIngrese el numero de hilillos Totales \n");
             total = int.Parse(Console.ReadLine());
+
+            /*****Leer de archivos*******/
             int index = 0;
             Char delimiter = ' ';
 
@@ -124,13 +126,17 @@ namespace MultiThread
                     }                        
                 }                
             }
-            
+            /******Fin leer de archivos*******/
+
+
             for(int i = 0; i < 12; ++i) 
             {
                 Console.Write(memInstruc[i]+ "\n");
             }
             Console.ReadKey();
 
+
+/*
             memInstruc[0] = 8;
             memInstruc[1] = 2;
             memInstruc[2] = 2;
@@ -143,7 +149,7 @@ namespace MultiThread
             memInstruc[10] = 3;
             memInstruc[11] = 3;
             memInstruc[12] = 63;
-            cola.Encolar(8);
+            cola.Encolar(8);*/
 
             //*****************Leer archivo termina aqui*********************////
 
@@ -651,15 +657,15 @@ namespace MultiThread
                                             }
                                         }
                                     }
-                                    if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
+                                    if ((bloque == cacheDatos2[4, posicion]) && (cacheDatos2[5, posicion] == 1))
                                     {
-                                        cacheDatos1[palabra, posicion] = rf2;//registro donde viene
+                                        cacheDatos2[palabra, posicion] = rf2;//registro donde viene
 
                                     }
                                     memDatos[palabra] = rf2; //registro donde viene
                                     FallodeCache(7);
                                     Monitor.Exit(busD);
-                                    Monitor.Exit(cacheDatos1);
+                                    Monitor.Exit(cacheDatos2);  //sino es la 1
                                     break;
 
                                 case 3:
@@ -716,15 +722,15 @@ namespace MultiThread
                                             }
                                         }
                                     }
-                                    if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
+                                    if ((bloque == cacheDatos3[4, posicion]) && (cacheDatos3[5, posicion] == 1))
                                     {
-                                        cacheDatos1[palabra, posicion] = rf2;//registro donde viene
+                                        cacheDatos3[palabra, posicion] = rf2;//registro donde viene
 
                                     }
                                     memDatos[palabra] = rf2; //registro donde viene
                                     FallodeCache(7);
                                     Monitor.Exit(busD);
-                                    Monitor.Exit(cacheDatos1);
+                                    Monitor.Exit(cacheDatos3);  //sino es la 1
                                     break;
                             }
                             break;
