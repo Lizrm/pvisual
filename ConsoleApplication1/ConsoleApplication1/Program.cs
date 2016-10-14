@@ -53,7 +53,7 @@ namespace MultiThread
         {
             //**Bloque de creacion**//
 
-            memDatos = new int[96];         // 384/4
+            memDatos = new int[96];         // 384/4 //Cambiar por 96 despues
             memInstruc = new int[640];      // 40 bloques * 4 *4
             cola = new Contextos();
             finalizados = new Contextos();
@@ -73,7 +73,7 @@ namespace MultiThread
             reloj = 0;
             for (int i = 0; i < 96; ++i)    // Memoria principal inicilizada en uno
             {
-                memDatos[i] = 1;
+                memDatos[i] = 1;        
                 memInstruc[i] = 1;
             }
             for (int i = 96; i < 640; ++i)   // Memoria principal inicilizada en uno
@@ -127,33 +127,7 @@ namespace MultiThread
                 }                
             }
             /******Fin leer de archivos*******/
-
-
-            for(int i = 0; i < 12*4; ++i) 
-            {
-                Console.Write(memInstruc[i]+ "\n");
-            }
-            Console.ReadKey();
-
-
-/*
-            memInstruc[0] = 8;
-            memInstruc[1] = 2;
-            memInstruc[2] = 2;
-            memInstruc[3] = 2;
-            memInstruc[4] = 63;     // SE DEBEN RESERVAR LOS 4 ESPACIOS EN LA MEMORIA DE INSTUCCIONES SIEMPRE
-            cola.Encolar(0);
-
-            memInstruc[8] = 8;
-            memInstruc[9] = 3;
-            memInstruc[10] = 3;
-            memInstruc[11] = 3;
-            memInstruc[12] = 63;
-            cola.Encolar(8);*/
-
-            //*****************Leer archivo termina aqui*********************////
-
-
+            
             //Creacion de los 3 hilos que emulan los nucleos
             Thread thread1 = new Thread(() => Nucleos(quantumTotal));
             Thread thread2 = new Thread(() => Nucleos(quantumTotal));
@@ -190,7 +164,8 @@ namespace MultiThread
             thread2.Abort();
             thread3.Abort();
 
-           finalizados.Imprimir();
+            finalizados.Imprimir();
+            
 
         }//FIN de Main
 
@@ -218,7 +193,7 @@ namespace MultiThread
 
             for (int i = 0; i < 32; ++i)
             {
-                reg[i] = 0;
+                reg[i] = 0; //Debo incializarlo en 0
             }
 
             for (int i = 0; i < 4; ++i) //las caches se inicializadas en cero
@@ -463,7 +438,7 @@ namespace MultiThread
                                     }
                                     FallodeCache(28);
                                     Monitor.Exit(busD);
-                                    rf2 = cacheDatos1[palabra, posicion];
+                                    reg[rf2] = cacheDatos1[palabra, posicion];
                                     Monitor.Exit(cacheDatos1);
 
                                     break;
@@ -502,6 +477,7 @@ namespace MultiThread
                                     }
                                     FallodeCache(28);
                                     Monitor.Exit(busD);
+                                    reg[rf2] = cacheDatos1[palabra, posicion];
                                     Monitor.Exit(cacheDatos2); //soltar mi cache 
                                                                //Se le entrega el dato al registro 
                                     break;
@@ -540,6 +516,7 @@ namespace MultiThread
                                     }
                                     FallodeCache(28);
                                     Monitor.Exit(busD);
+                                    reg[rf2] = cacheDatos1[palabra, posicion];
                                     Monitor.Exit(cacheDatos3); //soltar mi cache 
                                                                //Se le entrega el dato al registro
                                     break;
