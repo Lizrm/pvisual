@@ -113,7 +113,7 @@ namespace MultiThread
             for (int i = 0; i < total; ++i) 
             {
                 cola.Encolar(index);
-                string[] lines = File.ReadAllLines(i +".txt");   //Funciona si los archivos estan en bin, hay que cambiarlo
+                string[] lines = File.ReadAllLines(0 +".txt");   //Funciona si los archivos estan en bin, hay que cambiarlo
 
                 foreach(string line in lines)
                 {
@@ -251,6 +251,11 @@ namespace MultiThread
                     {
                         vacia = false;
                     }
+                    else
+                    {
+                        Monitor.Exit(cola);
+                    }
+                    
                 }
                 
                 Console.WriteLine("Consigue la cola");
@@ -340,10 +345,14 @@ namespace MultiThread
                     //Codificacion de las instrucciones recibidas
                     switch (cop) //cop es el codigo de operacion 		// se deben verificar que el registro destino no sea cero 
                     {
+
+                        case 0:
+                            Console.WriteLine("LEE ceros");
+                            break;
                         case 8: //DADDI rf1 <------- rf2 + inm
 
                             Console.WriteLine("Hace caso 8: DADDI");
-                           reg[rf1] = reg[rf2] + rd;
+                           reg[rf2] = reg[rf1] + rd;
                             break;
 
                         case 32: //DADD rd <------ rf1 + rf2
@@ -382,7 +391,7 @@ namespace MultiThread
                         case 5: //BNEZ si rf z 0 o rf > 0 entonces SALTA
 
                             Console.WriteLine("Hace caso 5: BNEZ");
-                            if (reg[rf1] < reg[0] || reg[rf1] > reg[0]) //PUEDO cambiar esto por un != de cero
+                            if (reg[rf1] != 0) //PUEDO cambiar esto por un != de cero
                             {
                                 PC += (rd * 4);
                             }
@@ -392,7 +401,7 @@ namespace MultiThread
 
                             Console.WriteLine("Hace caso 3: JAL");
                             reg[31] = PC;
-                            PC += rd;   //  PC = PC + inm;
+                            PC += rd;
 
                             break;
 
@@ -495,7 +504,6 @@ namespace MultiThread
                                     Monitor.Exit(busD);
                                     Monitor.Exit(cacheDatos2); //soltar mi cache 
                                                                //Se le entrega el dato al registro 
-
                                     break;
 
                                 case 3:
@@ -747,7 +755,7 @@ namespace MultiThread
                             break;
 
                         case 63: //FIN
-                            Console.WriteLine("FIN");
+                            Console.WriteLine("Instruccion de FIN");
                             quantum = -1;  // Para tener el control de que la ultima instruccion fue FIN
                             break;
                     }
@@ -765,7 +773,6 @@ namespace MultiThread
 
                         cpu += (reloj - inicioReloj);   //Ciclos de reloj que duro el hilillo en ejecucion
                         Console.WriteLine("Se agrego elemento a finalizados PC: ");
-                        Console.WriteLine(PC);
                         finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj);
                         Monitor.Exit(finalizados);
                     }
@@ -778,9 +785,9 @@ namespace MultiThread
                                 TicReloj();
                             }
                             TicReloj();
-
                             cpu += (reloj - inicioReloj);
                             cola.Guardar(PC, ref reg, cpu);
+                            Console.WriteLine("Se guardo contexto \n");
                             Monitor.Exit(cola);
                         }
                     }
@@ -906,9 +913,9 @@ namespace MultiThread
                 {
                     Console.WriteLine("reg[" + i + "]= \t" + aux.regist[i]);
                 }
-                string t = Console.ReadLine();    
-                }
-            
+                string t = Console.ReadLine();
+
+            }            
         }
 
     }//FIN de la clase Contextos
