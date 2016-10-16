@@ -611,6 +611,7 @@ namespace MultiThread
                                         cacheDatos1[palabra, posicion] = rf2;//registro donde viene
 
                                     }
+                                    palabra = palabra * bloque;
                                     memDatos[palabra] = reg[rf2]; //registro donde viene
                                     Console.Write("Datos: " + palabra + " = " + reg[rf2] +"Registro"+ rf2);
                                     Console.ReadKey();
@@ -678,6 +679,7 @@ namespace MultiThread
                                         cacheDatos2[palabra, posicion] = rf2;//registro donde viene
 
                                     }
+                                    palabra = palabra * bloque;
                                     memDatos[palabra] = reg[rf2]; //registro donde viene 
                                     Console.Write("Datos: " + palabra + " = " + reg[rf2] + "Registro" + rf2);
                                     Console.ReadKey();
