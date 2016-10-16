@@ -396,11 +396,10 @@ namespace MultiThread
                         case 35: //LW
 
                             Console.WriteLine("Hace caso 35: LW");
-                            int dir = rf1 + rd;
+                            int dir = reg[rf1] + rd;
                             bloque = dir / 16;
                             posicion = bloque % 4;
                             palabra = (dir % 16) / 4;     //caculo de bloque y palabra
-
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
                                 case 1:
@@ -592,7 +591,7 @@ namespace MultiThread
                                         cacheDatos1[palabra, posicion] = rf2;//registro donde viene
 
                                     }
-                                    memDatos[palabra] = rf2; //registro donde viene
+                                    memDatos[palabra] = reg[rf2]; //registro donde viene
                                     FallodeCache(7);
                                     Monitor.Exit(busD);
                                     Monitor.Exit(cacheDatos1);
@@ -657,7 +656,7 @@ namespace MultiThread
                                         cacheDatos2[palabra, posicion] = rf2;//registro donde viene
 
                                     }
-                                    memDatos[palabra] = rf2; //registro donde viene
+                                    memDatos[palabra] = reg[rf2]; //registro donde viene
                                     FallodeCache(7);
                                     Monitor.Exit(busD);
                                     Monitor.Exit(cacheDatos2);  //sino es la 1
@@ -722,7 +721,7 @@ namespace MultiThread
                                         cacheDatos3[palabra, posicion] = rf2;//registro donde viene
 
                                     }
-                                    memDatos[palabra] = rf2; //registro donde viene
+                                    memDatos[palabra] = reg[rf2]; //registro donde viene
                                     FallodeCache(7);
                                     Monitor.Exit(busD);
                                     Monitor.Exit(cacheDatos3);  //sino es la 1
