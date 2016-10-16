@@ -430,6 +430,8 @@ namespace MultiThread
                                                 }
                                                 cacheDatos1[4, posicion] = bloque;
                                                 cacheDatos1[5, posicion] = 1;
+                                                FallodeCache(28);
+                                                Monitor.Exit(busD);
                                             }
                                         }
                                         else
@@ -437,8 +439,6 @@ namespace MultiThread
                                             conseguido = true;
                                         }
                                     }
-                                    FallodeCache(28);
-                                    Monitor.Exit(busD);
                                     reg[rf2] = cacheDatos1[palabra, posicion];
                                     Monitor.Exit(cacheDatos1);
 
@@ -473,18 +473,18 @@ namespace MultiThread
                                                 }
                                                 cacheDatos2[4, posicion] = bloque;
                                                 cacheDatos2[5, posicion] = 1;
+                                                FallodeCache(28);
+                                                Monitor.Exit(busD);
                                             }
                                         }
                                         else
                                         {
                                             conseguido = true;
                                         }
-                                    }
-                                    FallodeCache(28);
-                                    Monitor.Exit(busD);
-                                    reg[rf2] = cacheDatos1[palabra, posicion];
+                                    }                                   
+                                    reg[rf2] = cacheDatos1[palabra, posicion];//Se le entrega el dato al registro
                                     Monitor.Exit(cacheDatos2); //soltar mi cache 
-                                                               //Se le entrega el dato al registro 
+                                                                
                                     break;
 
                                 case 3:
@@ -516,6 +516,8 @@ namespace MultiThread
                                                 }
                                                 cacheDatos3[4, posicion] = bloque;
                                                 cacheDatos3[5, posicion] = 1;
+                                                FallodeCache(28);
+                                                Monitor.Exit(busD);
                                             }
                                         }
                                         else
@@ -523,11 +525,9 @@ namespace MultiThread
                                             conseguido = true;
                                         }
                                     }
-                                    FallodeCache(28);
-                                    Monitor.Exit(busD);
-                                    reg[rf2] = cacheDatos1[palabra, posicion];
+                                    reg[rf2] = cacheDatos1[palabra, posicion];//Se le entrega el dato al registro
                                     Monitor.Exit(cacheDatos3); //soltar mi cache 
-                                                               //Se le entrega el dato al registro
+                                                               
                                     break;
                             }
                             break;
@@ -894,8 +894,8 @@ namespace MultiThread
             {
                 Contexto aux = (Contexto)queue.Dequeue();
                 contador--;
-                Console.WriteLine("PC: \t" + aux.pc + "\nReloj CPU: \t" + aux.relojCPU + "\nReloj Total: \t" + aux.relojTotal);
-                for (int i = 1; i < 32; ++i)
+                Console.WriteLine("PC: \t" + aux.pc + "\nReloj CPU: \t" + aux.relojCPU + "\nReloj Total: \t" + aux.relojTotal + "\n");
+                for (int i = 0; i < 32; ++i)
                 {
                     Console.WriteLine("reg[" + i + "]= \t" + aux.regist[i]);
                 }
