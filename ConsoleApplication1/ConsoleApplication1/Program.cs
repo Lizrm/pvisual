@@ -420,7 +420,6 @@ namespace MultiThread
                                             }
                                             else
                                             {
-                                                conseguido = true;
                                                 TicReloj();
                                                 inicioBloque = bloque * 4;    //inicio del bloque a copiar
 
@@ -432,6 +431,10 @@ namespace MultiThread
                                                 cacheDatos1[4, posicion] = bloque;
                                                 cacheDatos1[5, posicion] = 1;
                                             }
+                                        }
+                                        else
+                                        {
+                                            conseguido = true;
                                         }
                                     }
                                     FallodeCache(28);
@@ -472,6 +475,10 @@ namespace MultiThread
                                                 cacheDatos2[5, posicion] = 1;
                                             }
                                         }
+                                        else
+                                        {
+                                            conseguido = true;
+                                        }
                                     }
                                     FallodeCache(28);
                                     Monitor.Exit(busD);
@@ -510,6 +517,10 @@ namespace MultiThread
                                                 cacheDatos3[4, posicion] = bloque;
                                                 cacheDatos3[5, posicion] = 1;
                                             }
+                                        }
+                                        else
+                                        {
+                                            conseguido = true;
                                         }
                                     }
                                     FallodeCache(28);
