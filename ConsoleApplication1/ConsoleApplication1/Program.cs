@@ -126,8 +126,6 @@ namespace MultiThread
                     }
                 }                
             }
-
-            Console.ReadLine();
             /******Fin leer de archivos*******/
 
             //Creacion de los 3 hilos que emulan los nucleos
@@ -169,13 +167,6 @@ namespace MultiThread
              finalizados.Imprimir();
 
         }//FIN de Main
-
-
-
-
-
-
-
 
         public static void Nucleos(int q) //quatum
         {
