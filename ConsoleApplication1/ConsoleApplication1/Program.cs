@@ -121,53 +121,61 @@ namespace MultiThread
 
                     foreach(var subestring in substrings)
                     {
-                        memInstruc[index] = int.Parse(subestring);
+                        memInstruc[index] = int.Parse(subestring);                   
                         ++index;
-                    }                        
+                    }
                 }                
             }
+
+            Console.ReadLine();
             /******Fin leer de archivos*******/
-            
+
             //Creacion de los 3 hilos que emulan los nucleos
-            Thread thread1 = new Thread(() => Nucleos(quantumTotal));
-            Thread thread2 = new Thread(() => Nucleos(quantumTotal));
-            Thread thread3 = new Thread(() => Nucleos(quantumTotal));
-            //Se les asigna un "id" a los hilos
-            thread1.Name = "1";
-            thread2.Name = "2";
-            thread3.Name = "3";
-            //Se inician los hilos
-            thread1.Start();
-            thread2.Start();
-            thread3.Start();
+             Thread thread1 = new Thread(() => Nucleos(quantumTotal));
+             Thread thread2 = new Thread(() => Nucleos(quantumTotal));
+             Thread thread3 = new Thread(() => Nucleos(quantumTotal));
+             //Se les asigna un "id" a los hilos
+             thread1.Name = "1";
+             thread2.Name = "2";
+             thread3.Name = "3";
+             //Se inician los hilos
+             thread1.Start();
+             thread2.Start();
+             thread3.Start();
 
 
-            //Verificar que todos los hilillos finalizaron
-            int cardinalidad;
-            cardinalidad = 0;
-            while (cardinalidad < total)
-            {
-                if (!Monitor.TryEnter(finalizados))
-                {
-                    TicReloj();
-                }
-                else
-                {
-                    TicReloj();
-                    cardinalidad = finalizados.Cantidad();
-                    Monitor.Exit(finalizados);
-                }               
-            }
+             //Verificar que todos los hilillos finalizaron
+             int cardinalidad;
+             cardinalidad = 0;
+             while (cardinalidad < total)
+             {
+                 if (!Monitor.TryEnter(finalizados))
+                 {
+                     TicReloj();
+                 }
+                 else
+                 {
+                     TicReloj();
+                     cardinalidad = finalizados.Cantidad();
+                     Monitor.Exit(finalizados);
+                 }               
+             }
 
-            //Finaliza los 3 hilos que emulan los nucleos               //Preguntar, depues de matar los hilos, debo segui dando tic de reloj??
-            thread1.Abort();
-            thread2.Abort();
-            thread3.Abort();
+             //Finaliza los 3 hilos que emulan los nucleos               //Preguntar, depues de matar los hilos, debo segui dando tic de reloj??
+             thread1.Abort();
+             thread2.Abort();
+             thread3.Abort();
 
-            finalizados.Imprimir();
-            
+             finalizados.Imprimir();
 
         }//FIN de Main
+
+
+
+
+
+
+
 
         public static void Nucleos(int q) //quatum
         {
@@ -327,7 +335,7 @@ namespace MultiThread
                         case 8: //DADDI rf1 <------- rf2 + inm
 
                             Console.WriteLine("Hace caso 8: DADDI");
-                           reg[rf2] = reg[rf1] + rd;
+                            reg[rf2] = reg[rf1] + rd;
                             break;
 
                         case 32: //DADD rd <------ rf1 + rf2
@@ -366,7 +374,7 @@ namespace MultiThread
                         case 5: //BNEZ si rf z 0 o rf > 0 entonces SALTA
 
                             Console.WriteLine("Hace caso 5: BNEZ");
-                            if (reg[rf1] != 0) //PUEDO cambiar esto por un != de cero
+                            if (reg[rf1] != 0)
                             {
                                 PC += (rd * 4);
                             }
@@ -526,7 +534,7 @@ namespace MultiThread
                         case 43: //SW
 
                             Console.WriteLine("Hace caso 43: SW");
-                            int direccion = rf1 + rd;
+                            int direccion = reg[rf1] + rd;
                             bloque = direccion / 16;
                             posicion = bloque % 4;
                             palabra = (direccion % 16) / 4;
