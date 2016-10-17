@@ -114,15 +114,15 @@ namespace MultiThread
             for (int i = 0; i < total; ++i) 
             {
                 cola.Encolar(index);
-                string[] lines = File.ReadAllLines(0 +".txt");   //Funciona si los archivos estan en bin, hay que cambiarlo
+                string[] lines = File.ReadAllLines(0 +".txt");          // Funciona si los archivos estan en bin, hay que cambiarlo
 
                 foreach(string line in lines)
                 {
-                    string[] substrings = line.Split(delimiter);    //Se recortan los espacios en blanco
+                    string[] substrings = line.Split(delimiter);        // Se recortan los espacios en blanco
 
                     foreach(var subestring in substrings)
                     {
-                        memInstruc[index] = int.Parse(subestring);                   
+                        memInstruc[index] = int.Parse(subestring);      // Se mete en la memoria de instrucciones              
                         ++index;
                     }
                 }                
@@ -160,7 +160,7 @@ namespace MultiThread
                  }               
              }
 
-             //Finaliza los 3 hilos que emulan los nucleos               //Preguntar, depues de matar los hilos, debo segui dando tic de reloj??
+             //Finaliza los 3 hilos que emulan los nucleos               //Preguntar, depues de matar los hilos, debo seguir dando tic de reloj??
              thread1.Abort();
              thread2.Abort();
              thread3.Abort();
@@ -169,15 +169,15 @@ namespace MultiThread
 
         }//FIN de Main
 
-        public static void Nucleos(int q) //quatum
+        public static void Nucleos(int q) // Quantum
         {
             /**Bloque de Declaracion**/
-            int[] reg;               //Vector de registros
-            int[][] cacheInstruc = new int[6][];     //16 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
-            int PC;                   //Para el control de las instrucciones
-            int cop, rf1, rf2, rd;//codigo de operacion, registro fuente, registro fuente2 o registro destino dependiendo de la instruccion, rd registro destino o inmediato dependiendo de la instruccion
+            int[] reg;                                                      // Vector de registros
+            int[][] cacheInstruc = new int[6][];                            // 16 columnas 6 filas, (fila 0 p0, fila 2 p1, fila 4 etiqueta, fila 5 valides)
+            int PC;                                                         // Para el control de las instrucciones
+            int cop, rf1, rf2, rd;                                          // Codigo de operacion, registro fuente, registro fuente2 o registro destino dependiendo de la instruccion, rd registro destino o inmediato dependiendo de la instruccion
             int bloque, posicion, palabra, iterador, quantum, inicioBloque; // bloque es el bloque de memoria cache, quatum es el tiempo dado por el usuario
-            int cpu;    //Tic de reloj que dura un hilillo en ejecucion
+            int cpu;                                                        // Tic de reloj que dura un hilillo en ejecucion
             int inicioReloj;
             /**Bloque de Creacion**/
             reg = new int[32];
@@ -212,7 +212,7 @@ namespace MultiThread
             }
             //**************Fin bloque inicilaizacion****************//
             Console.WriteLine("entra al hilo");
-            while (true)//while que no deja que los hilos mueran
+            while (true) // while que no deja que los hilos mueran
             {
                 bool vacia = true;
                 while(vacia)
@@ -278,13 +278,13 @@ namespace MultiThread
                 {
                  
                     /**************************/
-                    bloque = PC / 16;  //calculo el bloque
-                    posicion = bloque % 4;    //posicion en cache
+                    bloque = PC / 16;           // Calculo el bloque
+                    posicion = bloque % 4;      // Posicion en cache
                     palabra = (PC % 16) / 4;
                     /*************************/
                     if (!(cacheInstruc[4][posicion] == bloque) && !(cacheInstruc[4][posicion] == 1)) //1 valido
                     {
-                        // fallo de cache
+                        // FALLO DE CACHE !!
                         while (!Monitor.TryEnter(busI))
                         {
                             TicReloj();
@@ -317,14 +317,14 @@ namespace MultiThread
                     rd = cacheInstruc[palabra][iterador + 3];  //destino
                     PC += 4;
 
-                    //Codificacion de las instrucciones recibidas
-                    switch (cop) //cop es el codigo de operacion 		// se deben verificar que el registro destino no sea cero 
+                    // Codificacion de las instrucciones recibidas
+                    switch (cop) // cop es el codigo de operacion 		// Se deben verificar que el registro destino no sea cero 
                     {
 
                         case 0:
                             Console.WriteLine("LEE ceros");
                             break;
-                        case 8: //DADDI rf1 <------- rf2 + inm
+                        case 8: //DADDI rf2 <------- rf1+ inm
 
                             Console.WriteLine("Hace caso 8: DADDI");
                             reg[rf2] = reg[rf1] + rd;
@@ -412,7 +412,7 @@ namespace MultiThread
                             int dir = reg[rf1] + rd;
                             bloque = dir / 16;
                             posicion = bloque % 4;
-                            palabra = (dir % 16) / 4;     //caculo de bloque y palabra
+                            palabra = (dir % 16) / 4;     // Calculo de bloque y palabra
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
                                 case 1:
@@ -494,8 +494,8 @@ namespace MultiThread
                                             c2 = true;
                                         }
                                     }                                   
-                                    reg[rf2] = cacheDatos1[palabra, posicion];//Se le entrega el dato al registro
-                                    Monitor.Exit(cacheDatos2); //soltar mi cache                                                                 
+                                    reg[rf2] = cacheDatos1[palabra, posicion];  // Se le entrega el dato al registro
+                                    Monitor.Exit(cacheDatos2);                  // Soltar mi cache                                                                 
                                     break;
 
                                 case 3:
@@ -518,9 +518,9 @@ namespace MultiThread
                                             {
                                                 c3 = true;
                                                 TicReloj();
-                                                inicioBloque = bloque * 4;    //inicio del bloque a copiar
+                                                inicioBloque = bloque * 4;    // Inicio del bloque a copiar
 
-                                                for (int i = 0; i < 4; ++i) //Copia los datos de memoria a Cache
+                                                for (int i = 0; i < 4; ++i)   // Copia los datos de memoria a Cache
                                                 {
                                                     cacheDatos3[i, posicion] = memDatos[inicioBloque];
                                                     inicioBloque++;
@@ -536,8 +536,8 @@ namespace MultiThread
                                             c3 = true;
                                         }
                                     }
-                                    reg[rf2] = cacheDatos1[palabra, posicion];//Se le entrega el dato al registro
-                                    Monitor.Exit(cacheDatos3); //soltar mi cache                                                                
+                                    reg[rf2] = cacheDatos1[palabra, posicion];  // Se le entrega el dato al registro
+                                    Monitor.Exit(cacheDatos3);                  // Soltar mi cache                                                                
                                     break;
                             }
                             break;
@@ -554,7 +554,7 @@ namespace MultiThread
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
                                 case 1:
-                                    //caculo de bloque y palabra
+                                    // Calculo de bloque y palabra
                                     bool conseguido = false;
                                     while (!conseguido)
                                     {
@@ -610,11 +610,11 @@ namespace MultiThread
                                     }
                                     if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
                                     {
-                                        cacheDatos1[palabra, posicion] = rf2;//registro donde viene
+                                        cacheDatos1[palabra, posicion] = rf2;  // Registro donde viene
 
                                     }
                                     
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; //registro donde viene
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
                                     Console.Write("Datos: " + bloque +"+"+ palabra + " = " + reg[rf2] +"Registro"+ rf2);
                                    // Console.ReadKey();
                                     FallodeCache(7);
@@ -678,11 +678,11 @@ namespace MultiThread
                                     }
                                     if ((bloque == cacheDatos2[4, posicion]) && (cacheDatos2[5, posicion] == 1))
                                     {
-                                        cacheDatos2[palabra, posicion] = rf2;//registro donde viene
+                                        cacheDatos2[palabra, posicion] = rf2; // Registro donde viene
 
                                     }
                                     
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; //registro donde viene 
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
                                     Console.Write("Datos: " + bloque + "+" + palabra + " = " + reg[rf2] + "Registro" + rf2);
                                     //Console.ReadKey();
                                     FallodeCache(7);
@@ -746,11 +746,11 @@ namespace MultiThread
                                     }
                                     if ((bloque == cacheDatos3[4, posicion]) && (cacheDatos3[5, posicion] == 1))
                                     {
-                                        cacheDatos3[palabra, posicion] = rf2;//registro donde viene
+                                        cacheDatos3[palabra, posicion] = rf2; // Registro donde viene
 
                                     }
                                     
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; //registro donde viene
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
                                     Console.Write("Datos: " + bloque + "+" + palabra + " = " + reg[rf2] + "Registro" + rf2);
                                    // Console.ReadKey();
                                     FallodeCache(7);
@@ -766,7 +766,7 @@ namespace MultiThread
                             break;
                     }
 
-                    quantum--; //lo resto al finalizar una instruccion
+                    quantum--; // Lo resto al finalizar una instruccion
 
                     if (quantum < 0)//ultima fue FIN
                     {
@@ -777,14 +777,14 @@ namespace MultiThread
                         }
                         TicReloj();
 
-                        cpu += (reloj - inicioReloj);   //Ciclos de reloj que duro el hilillo en ejecucion
+                        cpu += (reloj - inicioReloj);   // Ciclos de reloj que duro el hilillo en ejecucion
                         Console.WriteLine("Se agrego elemento a finalizados PC: ");
                         finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj);
                         Monitor.Exit(finalizados);
                     }
                     else
                     {
-                        if (quantum == 0)//Se termino el quantum
+                        if (quantum == 0) // Se termino el quantum
                         {
                             while (!Monitor.TryEnter(cola))
                             {
@@ -817,7 +817,7 @@ namespace MultiThread
             public int relojCPU;
             public int relojTotal;
 
-            public Contexto(int p, ref int[] reg, int cpu)  //Contextos con registros que no han finalizado
+            public Contexto(int p, ref int[] reg, int cpu)  // Contextos con registros que no han finalizado
             {
                 pc = p;
                 regist = new int[32];
@@ -830,7 +830,7 @@ namespace MultiThread
                 }
             }
 
-            public Contexto(int p)      //Contextos que solo tiene el PC
+            public Contexto(int p)      // Contextos que solo tiene el PC
             {
                 pc = p;
                 relojCPU = 0;
@@ -842,7 +842,7 @@ namespace MultiThread
                 }
             }
 
-            public Contexto(int p, ref int[] reg, int cpu, int total)   //Contextos finalizados
+            public Contexto(int p, ref int[] reg, int cpu, int total)   // Contextos finalizados
             {
                 pc = p;
                 regist = new int[32];
@@ -861,14 +861,14 @@ namespace MultiThread
             queue = new Queue();
         }
 
-        ~Contextos() //Destructor de la clase
+        ~Contextos() // Destructor de la clase
         {
             //cola.Finalize();
         }
 
 
-        //reg se debe recibir por referencia 
-        public void Guardar(int p, ref int[] reg, int cpu)//Guarda el contexto         
+        // reg se debe recibir por referencia 
+        public void Guardar(int p, ref int[] reg, int cpu)  // Guarda el contexto         
         {
             Contexto nueva = new Contexto(p, ref reg, cpu);
             queue.Enqueue(nueva);
@@ -876,7 +876,7 @@ namespace MultiThread
 
         }//FIN de Guardar
 
-        public void Sacar(out int p, ref int[] reg, ref int relojActual)//Retorna el contexto
+        public void Sacar(out int p, ref int[] reg, ref int relojActual)  // Retorna el contexto
         {
             Contexto aux = (Contexto)queue.Dequeue();
             for (int i = 1; i < 32; ++i)
