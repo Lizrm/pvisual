@@ -511,7 +511,7 @@ namespace MultiThread
                                         {
                                             if (!Monitor.TryEnter(busD))
                                             {
-                                                Monitor.Exit(cacheDatos3); //cambiar por mi cache de datos
+                                                Monitor.Exit(cacheDatos3);
                                                 TicReloj();
                                             }
                                             else
@@ -549,6 +549,7 @@ namespace MultiThread
                             bloque = direccion / 16;
                             posicion = bloque % 4;
                             palabra = (direccion % 16) / 4;
+                            inicioBloque = bloque * 4;
 
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
@@ -613,7 +614,7 @@ namespace MultiThread
 
                                     }
                                     
-                                    memDatos[bloque+palabra] = reg[rf2]; //registro donde viene
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; //registro donde viene
                                     Console.Write("Datos: " + bloque +"+"+ palabra + " = " + reg[rf2] +"Registro"+ rf2);
                                    // Console.ReadKey();
                                     FallodeCache(7);
@@ -681,7 +682,7 @@ namespace MultiThread
 
                                     }
                                     
-                                    memDatos[bloque + palabra] = reg[rf2]; //registro donde viene 
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; //registro donde viene 
                                     Console.Write("Datos: " + bloque + "+" + palabra + " = " + reg[rf2] + "Registro" + rf2);
                                     //Console.ReadKey();
                                     FallodeCache(7);
@@ -749,7 +750,7 @@ namespace MultiThread
 
                                     }
                                     
-                                    memDatos[bloque + palabra] = reg[rf2]; //registro donde viene
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; //registro donde viene
                                     Console.Write("Datos: " + bloque + "+" + palabra + " = " + reg[rf2] + "Registro" + rf2);
                                    // Console.ReadKey();
                                     FallodeCache(7);
