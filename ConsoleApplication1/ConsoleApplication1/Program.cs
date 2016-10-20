@@ -49,6 +49,19 @@ namespace MultiThread
             }
         }//FIN de Fallo de Cache
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         static void Main()
         {
             //**Bloque de creacion**//
@@ -73,13 +86,13 @@ namespace MultiThread
             reloj = 0;
             for (int i = 0; i < 96; ++i)    // Memoria principal inicilizada en uno
             {
-                memDatos[i] = 0;        
-                memInstruc[i] = 0;
+                memDatos[i] = 1;        
+                memInstruc[i] = 1;
             }
 
             for (int i = 96; i < 640; ++i)   // Memoria principal inicilizada en uno
             {
-                memInstruc[i] = 0;
+                memInstruc[i] = 1;
             }
 
             for (int i = 0; i < 4; ++i)     // Las caches se inicializadas en cero
@@ -122,7 +135,8 @@ namespace MultiThread
 
                     foreach(var subestring in substrings)
                     {
-                        memInstruc[index] = int.Parse(subestring);      // Se mete en la memoria de instrucciones              
+                        memInstruc[index] = int.Parse(subestring);      // Se mete en la memoria de instrucciones   
+                        Console.Write(memInstruc[index]);        
                         ++index;
                     }
                 }                
@@ -173,6 +187,21 @@ namespace MultiThread
             }
             */
         }//FIN de Main
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public static void Nucleos(int q) // Quantum
         {
@@ -287,7 +316,7 @@ namespace MultiThread
                     posicion = bloque % 4;      // Posicion en cache
                     palabra = (PC % 16) / 4;
                     /*************************/
-                    if (!(cacheInstruc[4][posicion] == bloque) && !(cacheInstruc[4][posicion] == 1)) //1 valido
+                    if (!(cacheInstruc[4][posicion] == bloque) || !(cacheInstruc[4][posicion] == 1)) //1 valido
                     {
                         // FALLO DE CACHE !!
                         while (!Monitor.TryEnter(busI))
@@ -427,7 +456,7 @@ namespace MultiThread
                                             TicReloj();
                                         }
                                         TicReloj();
-                                        if (!(bloque == cacheDatos1[4, posicion]) && !(cacheDatos1[5, posicion] == 1))
+                                        if (!(bloque == cacheDatos1[4, posicion]) || !(cacheDatos1[5, posicion] == 1))
                                         {
                                             if (!Monitor.TryEnter(busD))
                                             {
@@ -469,7 +498,7 @@ namespace MultiThread
                                             TicReloj();
                                         }
                                         TicReloj();
-                                        if (!(bloque == cacheDatos2[4, posicion]) && !(cacheDatos2[5, posicion] == 1))
+                                        if (!(bloque == cacheDatos2[4, posicion]) || !(cacheDatos2[5, posicion] == 1))
                                         {
                                             if (!Monitor.TryEnter(busD))
                                             {
@@ -512,7 +541,7 @@ namespace MultiThread
                                             TicReloj();
                                         }
                                         TicReloj();
-                                        if (!(bloque == cacheDatos3[4, posicion]) && !(cacheDatos3[5, posicion] == 1))
+                                        if (!(bloque == cacheDatos3[4, posicion]) || !(cacheDatos3[5, posicion] == 1))
                                         {
                                             if (!Monitor.TryEnter(busD))
                                             {
