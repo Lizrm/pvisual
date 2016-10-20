@@ -126,7 +126,7 @@ namespace MultiThread
 
             for (int i = 0; i < total; ++i) 
             {
-                cola.Encolar(index);
+                cola.Encolar(index+ 384);
                 string[] lines = File.ReadAllLines(i +".txt");          // Funciona si los archivos estan en bin, hay que cambiarlo
 
                 foreach(string line in lines)
@@ -181,21 +181,12 @@ namespace MultiThread
 
              finalizados.Imprimir();
 
-           /* for(int i  = 0; 0 < 96; ++i)
+            for (int i = 0; i < 96; ++i)
             {
-                Console.Write_ memDatos
+                Console.Write(i + " : " + memDatos[i] + "\n");               
             }
-            */
+           
         }//FIN de Main
-
-
-
-
-
-
-
-
-
 
 
 
@@ -329,7 +320,7 @@ namespace MultiThread
                         cacheInstruc[5][posicion] = 1;
 
                         
-                        inicioBloque = (bloque * 16);// - 384;// bloque de instrucciones
+                        inicioBloque = ((bloque-24) * 16);//bloque en memoria de instrucciones
                         for (int i = 0; i < 4; ++i)
                         {
                             iterador = posicion * 4;
