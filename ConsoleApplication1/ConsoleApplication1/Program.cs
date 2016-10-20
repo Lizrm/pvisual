@@ -127,7 +127,7 @@ namespace MultiThread
             for (int i = 0; i < total; ++i) 
             {
                 cola.Encolar(index);
-                string[] lines = File.ReadAllLines(1 +".txt");          // Funciona si los archivos estan en bin, hay que cambiarlo
+                string[] lines = File.ReadAllLines(i +".txt");          // Funciona si los archivos estan en bin, hay que cambiarlo
 
                 foreach(string line in lines)
                 {
