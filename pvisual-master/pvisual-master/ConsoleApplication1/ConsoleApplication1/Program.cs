@@ -182,10 +182,17 @@ namespace MultiThread
 
              finalizados.Imprimir();
 
+            int y = 15;
             for (int i = 0; i < 96; ++i)
             {
-                Console.Write(i + " : " + memDatos[i] + "\n");               
+                Console.Write(memDatos[i] + "  ");
+                if (i == y)
+                {
+                    y += 16;
+                    Console.Write("\n");
+                }
             }
+            Console.ReadKey();
            
         }//FIN de Main
 
