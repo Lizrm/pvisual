@@ -464,6 +464,7 @@ namespace MultiThread
                                             }
                                             else
                                             {
+												conseguido = true;
                                                 TicReloj();
                                                 inicioBloque = bloque * 4;    //inicio del bloque a copiar
 
@@ -475,8 +476,7 @@ namespace MultiThread
                                                 cacheDatos1[4, posicion] = bloque;
                                                 cacheDatos1[5, posicion] = 1;
                                                 FallodeCache(28);
-                                                Monitor.Exit(busD);
-                                                conseguido = true;
+                                                Monitor.Exit(busD);                                                
                                             }
                                         }
                                         else
@@ -518,8 +518,7 @@ namespace MultiThread
                                                 cacheDatos2[4, posicion] = bloque;
                                                 cacheDatos2[5, posicion] = 1;
                                                 FallodeCache(28);
-                                                Monitor.Exit(busD);
-                                                c2 = true;
+                                                Monitor.Exit(busD);                                             
                                             }
                                         }
                                         else
@@ -561,8 +560,7 @@ namespace MultiThread
                                                 cacheDatos3[4, posicion] = bloque;
                                                 cacheDatos3[5, posicion] = 1;
                                                 FallodeCache(28);
-                                                Monitor.Exit(busD);
-                                                c3 = true;
+                                                Monitor.Exit(busD);                                                
                                             }
                                         }
                                         else
