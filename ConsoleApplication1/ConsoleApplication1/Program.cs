@@ -174,12 +174,12 @@ namespace MultiThread
                  }               
              }
 
-             //Finaliza los 3 hilos que emulan los nucleos               //Preguntar, depues de matar los hilos, debo seguir dando tic de reloj??
+             //Finaliza los 3 hilos que emulan los nucleos
              thread1.Abort();
              thread2.Abort();
              thread3.Abort();
 
-             finalizados.Imprimir();
+            //Imprime la memoria de Datos, 4 Bloques por linea
 
             int y = 15;
             for (int i = 0; i < 96; ++i)
@@ -192,6 +192,40 @@ namespace MultiThread
                 }
             }
             Console.ReadKey();
+
+            //Impresiones de las cache de datos
+
+            for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 1
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    Console.Write(cacheDatos1[i, j] + "  ");
+                }
+                Console.Write("\n");
+            }
+
+            for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 2
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    Console.Write(cacheDatos2[i, j] + "  ");
+                }
+                Console.Write("\n");
+            }
+
+            for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 3
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    Console.Write(cacheDatos3[i, j] + "  ");
+                }
+                Console.Write("\n");
+            }
+
+
+            finalizados.Imprimir();                                    //Imprime el contexto de TODOS los hilillos
+
+           
         }//FIN de Main
 
 
@@ -236,7 +270,7 @@ namespace MultiThread
                     cacheInstruc[i][j] = 0;
                 }
             }
-            for (int i = 4; i < 6; ++i) //las caches se inicializadas en -1
+            for (int i = 4; i < 6; ++i) //la valides de las caches se inicializadas en -1
             {
                 for (int j = 0; j < 4; ++j)
                 {
@@ -303,9 +337,10 @@ namespace MultiThread
                 cpu = 0;
                 inicioReloj = reloj;
                 cola.Sacar(out PC, ref reg, ref cpu, ref ID);   //ID es el numero del hilillo
-
                 Monitor.Exit(cola);
                 quantum = q;
+
+                Console.WriteLine("ID del hilillo:\t" + ID + "\n");
 
                 while (quantum > 0)
                 {
@@ -956,8 +991,8 @@ namespace MultiThread
                 {
                     Console.WriteLine("reg[" + i + "]= \t" + aux.regist[i]);
                 }
-                string t = Console.ReadLine();
 
+                Console.ReadKey();
             }            
         }
 
