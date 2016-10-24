@@ -583,11 +583,7 @@ namespace MultiThread
                                     bool c3 = false;
                                     while (!c3)
                                     {
-                                        while (!Monitor.TryEnter(RL3))
-                                        {
-                                            TicReloj();
-                                        }
-                                        TicReloj();
+
                                         if (!Monitor.TryEnter(cacheDatos3))
                                         {
                                             Monitor.Exit(RL3);
