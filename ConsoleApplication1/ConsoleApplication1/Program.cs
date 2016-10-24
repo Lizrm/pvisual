@@ -126,7 +126,7 @@ namespace MultiThread
 
             for (int i = 0; i < total; ++i) 
             {
-                cola.Encolar(index+ 384);
+                cola.Encolar(index+ 384, i);
                 string[] lines = File.ReadAllLines(i +".txt");          // Funciona si los archivos estan en bin, hay que cambiarlo
 
                 foreach(string line in lines)
@@ -210,8 +210,10 @@ namespace MultiThread
             int bloque, posicion, palabra, iterador, quantum, inicioBloque; // bloque es el bloque de memoria cache, quatum es el tiempo dado por el usuario
             int cpu;                                                        // Tic de reloj que dura un hilillo en ejecucion
             int inicioReloj;
+            int ID;                                                         //Es el numero identificador del hilillo
             /**Bloque de Creacion**/
             reg = new int[32];
+            ID = -1;
             cacheInstruc[0] = new int[16];
             cacheInstruc[1] = new int[16];
             cacheInstruc[2] = new int[16];
@@ -300,7 +302,7 @@ namespace MultiThread
                 
                 cpu = 0;
                 inicioReloj = reloj;
-                cola.Sacar(out PC, ref reg, ref cpu);
+                cola.Sacar(out PC, ref reg, ref cpu, ref ID);   //ID es el numero del hilillo
 
                 Monitor.Exit(cola);
                 quantum = q;
@@ -809,7 +811,7 @@ namespace MultiThread
 
                         cpu += (reloj - inicioReloj);   // Ciclos de reloj que duro el hilillo en ejecucion
                         Console.WriteLine("Se agrego elemento a finalizados PC: ");
-                        finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj);
+                        finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);
                         Monitor.Exit(finalizados);
                     }
                     else
@@ -822,7 +824,7 @@ namespace MultiThread
                             }
                             TicReloj();
                             cpu += (reloj - inicioReloj);
-                            cola.Guardar(PC, ref reg, cpu);
+                            cola.Guardar(PC, ref reg, cpu, ID);
                             Console.WriteLine("Se guardo contexto \n");
                             Monitor.Exit(cola);
                         }
@@ -846,22 +848,25 @@ namespace MultiThread
             public int[] regist;
             public int relojCPU;
             public int relojTotal;
+            public int Id;
 
-            public Contexto(int p, ref int[] reg, int cpu)  // Contextos con registros que no han finalizado
+            public Contexto(int p, ref int[] reg, int cpu, int id)  // Contextos con registros que no han finalizado
             {
+                Id = id;
                 pc = p;
                 regist = new int[32];
                 relojCPU = cpu;
                 relojTotal = 0;
-
+                
                 for (int i = 1; i < 32; ++i)
                 {
                     regist[i] = reg[i];
                 }
             }
 
-            public Contexto(int p)      // Contextos que solo tiene el PC
+            public Contexto(int p, int id)      // Contextos que solo tiene el PC
             {
+                Id = id;
                 pc = p;
                 relojCPU = 0;
                 relojTotal = 0;           
@@ -872,8 +877,9 @@ namespace MultiThread
                 }
             }
 
-            public Contexto(int p, ref int[] reg, int cpu, int total)   // Contextos finalizados
+            public Contexto(int p, ref int[] reg, int cpu, int total, int id)   // Contextos finalizados
             {
+                Id = id;
                 pc = p;
                 regist = new int[32];
                 relojCPU = cpu;
@@ -898,15 +904,15 @@ namespace MultiThread
 
 
         // reg se debe recibir por referencia 
-        public void Guardar(int p, ref int[] reg, int cpu)  // Guarda el contexto         
+        public void Guardar(int p, ref int[] reg, int cpu, int id)  // Guarda el contexto         
         {
-            Contexto nueva = new Contexto(p, ref reg, cpu);
+            Contexto nueva = new Contexto(p, ref reg, cpu, id);
             queue.Enqueue(nueva);
             contador++;
 
         }//FIN de Guardar
 
-        public void Sacar(out int p, ref int[] reg, ref int relojActual)  // Retorna el contexto
+        public void Sacar(out int p, ref int[] reg, ref int relojActual, ref int id)  // Retorna el contexto
         {
             Contexto aux = (Contexto)queue.Dequeue();
             for (int i = 1; i < 32; ++i)
@@ -915,12 +921,13 @@ namespace MultiThread
             }
             relojActual += aux.relojCPU;
             p = aux.pc;
+            id = aux.Id;
             contador--;
         }//FIN de Sacar
 
-        public void Encolar(int p)
+        public void Encolar(int p, int id)
         {
-            Contexto nueva = new Contexto(p);
+            Contexto nueva = new Contexto(p, id);
             queue.Enqueue(nueva);
             contador++;
         }//FIN de Encolar
@@ -931,9 +938,9 @@ namespace MultiThread
 
         }//FIN de cantidad
 
-        public void GuardarFinalizados(int p, ref int[] reg, int cpu, int total)
+        public void GuardarFinalizados(int p, ref int[] reg, int cpu, int total, int id)
         {
-            Contexto nueva = new Contexto(p, ref reg, cpu, total);
+            Contexto nueva = new Contexto(p, ref reg, cpu, total, id);
             queue.Enqueue(nueva);
             contador++;
         }//FIN de GuardarFinalizados
@@ -944,7 +951,7 @@ namespace MultiThread
             {
                 Contexto aux = (Contexto)queue.Dequeue();
                 contador--;
-                Console.WriteLine("PC: \t" + aux.pc + "\nReloj CPU: \t" + aux.relojCPU + "\nReloj Total: \t" + aux.relojTotal + "\n");
+                Console.WriteLine("ID Hilillo: \t"+ aux.Id +"\nPC: \t" + aux.pc + "\nReloj CPU: \t" + aux.relojCPU + "\nReloj Total: \t" + aux.relojTotal + "\n");
                 for (int i = 0; i < 32; ++i)
                 {
                     Console.WriteLine("reg[" + i + "]= \t" + aux.regist[i]);
