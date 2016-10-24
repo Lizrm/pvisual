@@ -511,8 +511,7 @@ namespace MultiThread
                                                     cacheDatos1[4, posicion] = bloque;
                                                     cacheDatos1[5, posicion] = 1;
                                                     FallodeCache(28);
-                                                    Monitor.Exit(busD);
-                                                    Monitor.Exit(RL1);
+                                                    Monitor.Exit(busD);                                                    
                                                 }
                                             }
                                             else
@@ -522,8 +521,10 @@ namespace MultiThread
                                         }
                                         
                                     }                                     
-                                    reg[rf2] = cacheDatos1[palabra, posicion];
-                                    Monitor.Exit(cacheDatos1);
+                                    reg[rf2] = cacheDatos1[palabra, posicion];  //Entrega el dato al registro
+                                    RL1[0] = direcc;                            //Guardar la direccion del candado en el RL
+                                    Monitor.Exit(cacheDatos1);                  //Sueltar la cache de datos
+                                    Monitor.Exit(RL1);                          //Sueltar el RL
                                     break;
 
                                 case 2:
@@ -565,8 +566,7 @@ namespace MultiThread
                                                     cacheDatos2[4, posicion] = bloque;
                                                     cacheDatos2[5, posicion] = 1;
                                                     FallodeCache(28);
-                                                    Monitor.Exit(busD);
-                                                    Monitor.Exit(RL2);
+                                                    Monitor.Exit(busD);                                                    
                                                 }
                                             }
                                             else
@@ -576,13 +576,20 @@ namespace MultiThread
                                         }
                                     }
                                     reg[rf2] = cacheDatos2[palabra, posicion];  // Se le entrega el dato al registro
-                                    Monitor.Exit(cacheDatos2);                  // Soltar mi cache                                                                 
+                                    RL2[0] = direcc;                            //Guardar la direccion del candado en el RL
+                                    Monitor.Exit(cacheDatos2);                  //Soltar mi cache    
+                                    Monitor.Exit(RL2);                          //Suelta el RL
                                     break;
 
                                 case 3:
                                     bool c3 = false;
                                     while (!c3)
                                     {
+                                        while (!Monitor.TryEnter(RL3))
+                                        {
+                                            TicReloj();
+                                        }
+                                        TicReloj();
 
                                         if (!Monitor.TryEnter(cacheDatos3))
                                         {
@@ -613,8 +620,7 @@ namespace MultiThread
                                                     cacheDatos3[4, posicion] = bloque;
                                                     cacheDatos3[5, posicion] = 1;
                                                     FallodeCache(28);
-                                                    Monitor.Exit(busD);
-                                                    Monitor.Exit(RL3);
+                                                    Monitor.Exit(busD);                                                   
                                                 }
                                             }
                                             else
@@ -624,7 +630,9 @@ namespace MultiThread
                                         }
                                     }
                                     reg[rf2] = cacheDatos3[palabra, posicion];  // Se le entrega el dato al registro
-                                    Monitor.Exit(cacheDatos3);                  // Soltar mi cache                                                                
+                                    RL3[0] = direcc;                            //Guardar la direccion del candado en el RL
+                                    Monitor.Exit(cacheDatos3);                  // Soltar mi cache   
+                                    Monitor.Exit(RL3);                          //Suelta el RL
                                     break;
                             }
                             break;
