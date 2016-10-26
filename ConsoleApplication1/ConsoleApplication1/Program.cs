@@ -479,8 +479,8 @@ namespace MultiThread
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
                                 case 1:
-                                    bool conseguido = false;
-                                    while (!conseguido)
+                                    bool l1 = false;
+                                    while (!l1)
                                     {
                                         while(!Monitor.TryEnter(RL1))
                                         {
@@ -505,7 +505,7 @@ namespace MultiThread
                                                 }
                                                 else
                                                 {
-                                                    conseguido = true;
+                                                    l1 = true;
                                                     TicReloj();
                                                     inicioBloque = bloque * 4;    //inicio del bloque a copiar
 
@@ -522,7 +522,7 @@ namespace MultiThread
                                             }
                                             else
                                             {
-                                                conseguido = true;
+                                                l1 = true;
                                             }
                                         }
                                         
@@ -534,8 +534,8 @@ namespace MultiThread
                                     break;
 
                                 case 2:
-                                    bool c2 = false;
-                                    while (!c2)
+                                    bool l2 = false;
+                                    while (!l2)
                                     {
                                         while (!Monitor.TryEnter(RL2))
                                         {
@@ -560,7 +560,7 @@ namespace MultiThread
                                                 }
                                                 else
                                                 {
-                                                    c2 = true;
+                                                    l2 = true;
                                                     TicReloj();
                                                     inicioBloque = bloque * 4;    //inicio del bloque a copiar
 
@@ -577,7 +577,7 @@ namespace MultiThread
                                             }
                                             else
                                             {
-                                                c2 = true;
+                                                l2 = true;
                                             }
                                         }
                                     }
@@ -588,8 +588,8 @@ namespace MultiThread
                                     break;
 
                                 case 3:
-                                    bool c3 = false;
-                                    while (!c3)
+                                    bool l3 = false;
+                                    while (!l3)
                                     {
                                         while (!Monitor.TryEnter(RL3))
                                         {
@@ -614,7 +614,7 @@ namespace MultiThread
                                                 }
                                                 else
                                                 {
-                                                    c3 = true;
+                                                    l3 = true;
                                                     TicReloj();
                                                     inicioBloque = bloque * 4;    // Inicio del bloque a copiar
 
@@ -631,7 +631,7 @@ namespace MultiThread
                                             }
                                             else
                                             {
-                                                c3 = true;
+                                                l3 = true;
                                             }
                                         }
                                     }
