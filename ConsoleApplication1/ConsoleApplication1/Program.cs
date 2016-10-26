@@ -182,6 +182,8 @@ namespace MultiThread
             //Imprime la memoria de Datos, 4 Bloques por linea
 
             int y = 15;
+
+            Console.Write("\nMemoria de Datos \n");
             for (int i = 0; i < 96; ++i)
             {
                 Console.Write(memDatos[i] + "  ");
@@ -195,6 +197,7 @@ namespace MultiThread
 
             //Impresiones de las cache de datos
 
+            Console.Write("\nCache de Datos 1: \n");
             for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 1
             {
                 for (int j = 0; j < 4; ++j)
@@ -204,6 +207,7 @@ namespace MultiThread
                 Console.Write("\n");
             }
 
+            Console.Write("\nCache de Datos 2: \n");
             for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 2
             {
                 for (int j = 0; j < 4; ++j)
@@ -213,6 +217,7 @@ namespace MultiThread
                 Console.Write("\n");
             }
 
+            Console.Write("\nCache de Datos 3: \n");
             for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 3
             {
                 for (int j = 0; j < 4; ++j)
@@ -221,6 +226,7 @@ namespace MultiThread
                 }
                 Console.Write("\n");
             }
+            Console.ReadKey();
 
 
             finalizados.Imprimir();                                    //Imprime el contexto de TODOS los hilillos
@@ -1014,7 +1020,6 @@ namespace MultiThread
                         TicReloj();
 
                         cpu += (reloj - inicioReloj);   // Ciclos de reloj que duro el hilillo en ejecucion
-                        Console.WriteLine("Se agrego elemento a finalizados PC: ");
                         finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);
                         Monitor.Exit(finalizados);
                     }
@@ -1155,7 +1160,7 @@ namespace MultiThread
             {
                 Contexto aux = (Contexto)queue.Dequeue();
                 contador--;
-                Console.WriteLine("ID Hilillo: \t"+ aux.Id +"\nPC: \t" + aux.pc + "\nReloj CPU: \t" + aux.relojCPU + "\nReloj Total: \t" + aux.relojTotal + "\n");
+                Console.WriteLine("\nID Hilillo: \t"+ aux.Id +"\nPC: \t" + aux.pc + "\nReloj CPU: \t" + aux.relojCPU + "\nReloj Total: \t" + aux.relojTotal + "\n");
                 for (int i = 0; i < 32; ++i)
                 {
                     Console.WriteLine("reg[" + i + "]= \t" + aux.regist[i]);
