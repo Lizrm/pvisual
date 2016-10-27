@@ -245,7 +245,7 @@ namespace MultiThread
             string lines;                                                   // lines es para poder meter en los archivos las impresiones
             // Se crean los archivos para cada hilo
             StreamWriter file = new StreamWriter("hilo" + Thread.CurrentThread.Name + ".txt");
-            /**Fin Bloque de Creacion**/
+            /**Bloque de Creacion**/
             reg = new int[32];
             ID = -1;
             cacheInstruc[0] = new int[16];
@@ -299,7 +299,7 @@ namespace MultiThread
                     
                 }
                 
-                Console.WriteLine("Consigue la cola");
+                Console.WriteLine("\nConsigue la cola");
                 switch (int.Parse(Thread.CurrentThread.Name)) //RL
                 {
                     case 1:
@@ -339,7 +339,9 @@ namespace MultiThread
                 Monitor.Exit(cola);
                 quantum = q;
 
-                Console.WriteLine("ID del hilillo:\t" + ID + "\n");
+                Console.WriteLine("ID del hilillo a ejecutar:\t" + ID + "\n");
+                file.WriteLine("\nID del hilillo a ejecutar:\t" + ID + "\n");
+
 
                 while (quantum > 0)
                 {
@@ -632,7 +634,6 @@ namespace MultiThread
                                                    
                         case 35: //LW
 
-                            Console.WriteLine("Hace caso 35: LW");
                             lines = "Hace caso 35: LW";
                             file.WriteLine(lines);
                             int dir = reg[rf1] + rd;
@@ -783,7 +784,6 @@ namespace MultiThread
 
                         case 43: //SW
 
-                            Console.WriteLine("Hace caso 43: SW");
                             lines = "Hace caso 43: SW";
                             file.WriteLine(lines);
                             int direccion = reg[rf1] + rd;
@@ -853,11 +853,9 @@ namespace MultiThread
                                     {
                                         cacheDatos1[palabra, posicion] = rf2;  // Registro donde viene
 
-                                    }
-                                    
+                                    }                                    
                                     memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
-                                    Console.Write("CASO 1 Datos: " + inicioBloque + " + "+ palabra + " = " + reg[rf2] +"Registro"+ rf2);
-                                    lines = "Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "Registro" + rf2;
+                                    lines = "Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "  Registro: " + rf2;
                                     file.WriteLine(lines);
                                    // Console.ReadKey();
                                     FallodeCache(7);
@@ -925,9 +923,8 @@ namespace MultiThread
 
                                     }
                                     
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
-                                    Console.Write("Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "Registro" + rf2);
-                                    lines = "CASO 2 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "Registro" + rf2;
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene                                     
+                                    lines = "CASO 2 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + " Registro: " + rf2;
                                     file.WriteLine(lines);
                                     //Console.ReadKey();
                                     FallodeCache(7);
@@ -995,9 +992,8 @@ namespace MultiThread
 
                                     }
                                     
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
-                                    Console.Write("Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "Registro" + rf2);
-                                    lines = "CASO 3 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "Registro" + rf2;
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene                                    
+                                    lines = "CASO 3 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] +  "Registro: " + rf2;
                                     file.WriteLine(lines);
                                    // Console.ReadKey();
                                     FallodeCache(7);
@@ -1008,7 +1004,9 @@ namespace MultiThread
                             break;
 
                         case 63: //FIN
-                            Console.WriteLine("Instruccion de FIN");
+                            Console.Write("Instruccion de FIN del Hilillo: " + ID);
+                            lines = "Instruccion de FIN del Hilillo: " + ID;
+                            file.WriteLine(lines);
                             quantum = -1;  // Para tener el control de que la ultima instruccion fue FIN
                             break;
                     }
@@ -1026,6 +1024,9 @@ namespace MultiThread
 
                         cpu += (reloj - inicioReloj);   // Ciclos de reloj que duro el hilillo en ejecucion
                         finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);
+                        lines = "\nSe guardo Finalizado el Hilillo " + ID;
+                        file.WriteLine(lines);
+                        Console.Write(lines);
                         Monitor.Exit(finalizados);
                     }
                     else
@@ -1039,7 +1040,8 @@ namespace MultiThread
                             TicReloj();
                             cpu += (reloj - inicioReloj);
                             cola.Guardar(PC, ref reg, cpu, ID);
-                            Console.WriteLine("Se guardo contexto \n");
+                            lines = "Se guardo Contexto del Hilillo " + ID;
+                            file.WriteLine(lines);
                             Monitor.Exit(cola);
                         }
                     }
@@ -1110,6 +1112,7 @@ namespace MultiThread
         public Contextos()
         {
             queue = new Queue();
+            contador = 0;
         }
 
         ~Contextos() // Destructor de la clase
@@ -1171,7 +1174,6 @@ namespace MultiThread
                 {
                     Console.WriteLine("reg[" + i + "]= \t" + aux.regist[i]);
                 }
-
                 Console.ReadKey();
             }            
         }
