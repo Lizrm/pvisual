@@ -53,15 +53,6 @@ namespace MultiThread
 
 
 
-
-
-
-
-
-
-
-
-
         static void Main()
         {
             //**Bloque de creacion**//
@@ -136,7 +127,7 @@ namespace MultiThread
                     foreach(var subestring in substrings)
                     {
                         memInstruc[index] = int.Parse(subestring);      // Se mete en la memoria de instrucciones   
-                        Console.Write(memInstruc[index]);        
+                        //Console.Write(memInstruc[index]);        
                         ++index;
                     }
                 }                
@@ -253,8 +244,8 @@ namespace MultiThread
             int ID;                                                         //Es el numero identificador del hilillo
             string lines;                                                   // lines es para poder meter en los archivos las impresiones
             // Se crean los archivos para cada hilo
-            System.IO.StreamWriter file = new System.IO.StreamWriter("hilo" + Thread.CurrentThread.Name + ".txt");
-            /**Bloque de Creacion**/
+            StreamWriter file = new StreamWriter("hilo" + Thread.CurrentThread.Name + ".txt");
+            /**Fin Bloque de Creacion**/
             reg = new int[32];
             ID = -1;
             cacheInstruc[0] = new int[16];
@@ -287,9 +278,6 @@ namespace MultiThread
                 }
             }
             //**************Fin bloque inicilaizacion****************//
-            Console.WriteLine("entra al hilo");
-            // Abrir el archivo en el que se va a escribir
-            File.ReadAllLines("hilo" + Thread.CurrentThread.Name + ".txt");
             while (true) // while que no deja que los hilos mueran
             {
                 bool vacia = true;
@@ -400,49 +388,33 @@ namespace MultiThread
                     switch (cop) // cop es el codigo de operacion 		// Se deben verificar que el registro destino no sea cero 
                     {
 
-                        case 0:
-                            Console.WriteLine("LEE ceros");
-                            break;
-                        case 8: //DADDI rf2 <------- rf1+ inm
-
-                            Console.WriteLine("Hace caso 8: DADDI");
+                       case 8: //DADDI rf2 <------- rf1+ inm
+                            
                             reg[rf2] = reg[rf1] + rd;
-
-                            Console.Write("REG: " +rf2 + " = " + reg[rf1] +"+"+ rd);
-                           // Console.ReadKey();
-
                             break;
 
                         case 32: //DADD rd <------ rf1 + rf2
-
-                            Console.WriteLine("Hace caso 32: DADD");
+                            
                             reg[rd] = reg[rf1] + reg[rf2];
                             break;
 
                         case 34: //DSUB  rd <------- rf1 - rf2
-
-                            Console.WriteLine("Hace caso 34: DSUB");
-                            Console.Write("REG: " + rd + " = " + reg[rf1] + "-" + reg[rf2]);
-                           // Console.ReadKey();
-
+                           
                             reg[rd] = reg[rf1] - reg[rf2];                            
                             break;
 
                         case 12: //DMUL  rd <------ rf1 * rf2
 
-                            Console.WriteLine("Hace caso 12: DMUL");
                             reg[rd] = reg[rf1] * reg[rf2];
                             break;
 
                         case 14: //DIV  rd <------ rf1 / rf2
 
-                            Console.WriteLine("Hace caso 14: DIV");
                             reg[rd] = reg[rf1] / reg[rf2];
                             break;
 
                         case 4: //BEZ si rf = 0 entonces SALTA
 
-                            Console.WriteLine("Hace caso 4: BEZ");
                             if (reg[rf1] == 0)
                             {
                                 PC += (rd * 4);
@@ -450,33 +422,25 @@ namespace MultiThread
                             break;
 
                         case 5: //BNEZ si rf z 0 o rf > 0 entonces SALTA
-
-                            Console.WriteLine("Hace caso 5: BNEZ");
+                           
                             if (reg[rf1] != 0)
                             {
                                 PC += (rd * 4);
-
-                                Console.Write("Salta");
-                               // Console.ReadKey();
                             }
                             break;
 
                         case 3: //JAL  reg 31 = PC
-
-                            Console.WriteLine("Hace caso 3: JAL");
+                            
                             reg[31] = PC;
                             PC += rd;
-
                             break;
 
                         case 2:  //JR  PC = rf1
 
-                            Console.WriteLine("Hace caso 2: JR");
                             PC = reg[rf1];
                             break;
 
                         case 50: //LL
-                            Console.WriteLine("Hace caso 35: LL");
                             lines = "Hace caso 35: LL";
                             file.WriteLine(lines);
                             int direcc = reg[rf1] + rd;
