@@ -248,6 +248,7 @@ namespace MultiThread
             /**Bloque de Creacion**/
             reg = new int[32];
             ID = -1;
+            PC = -1;
             cacheInstruc[0] = new int[16];
             cacheInstruc[1] = new int[16];
             cacheInstruc[2] = new int[16];
@@ -298,8 +299,7 @@ namespace MultiThread
                     }
                     
                 }
-                
-                Console.WriteLine("\nConsigue la cola");
+                               
                 switch (int.Parse(Thread.CurrentThread.Name)) //RL
                 {
                     case 1:
@@ -335,11 +335,11 @@ namespace MultiThread
                 
                 cpu = 0;
                 inicioReloj = reloj;
-                cola.Sacar(out PC, ref reg, ref cpu, ref ID);   //ID es el numero del hilillo
+                cola.Sacar(ref PC, ref reg, ref cpu, ref ID);   //ID es el numero del hilillo
                 Monitor.Exit(cola);
                 quantum = q;
 
-                Console.WriteLine("ID del hilillo a ejecutar:\t" + ID + "\n");
+                Console.WriteLine("\nID del hilillo a ejecutar:\t" + ID + "\n");
                 file.WriteLine("\nID del hilillo a ejecutar:\t" + ID + "\n");
 
 
@@ -1000,8 +1000,9 @@ namespace MultiThread
                             break;
 
                         case 63: //FIN
-                            Console.Write("Instruccion de FIN del Hilillo: " + ID);
-                            lines = "Instruccion de FIN del Hilillo: " + ID;
+                            
+                            lines = "\nInstruccion de FIN del Hilillo: " + ID;
+                            Console.Write(lines);
                             file.WriteLine(lines);
                             quantum = -1;  // Para tener el control de que la ultima instruccion fue FIN
                             break;
@@ -1020,7 +1021,7 @@ namespace MultiThread
 
                         cpu += (reloj - inicioReloj);   // Ciclos de reloj que duro el hilillo en ejecucion
                         finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);
-                        lines = "\nSe guardo Finalizado el Hilillo " + ID;
+                        lines = "\nSe guardo Finalizado el Hilillo " + ID + "\n";
                         file.WriteLine(lines);
                         Console.Write(lines);
                         Monitor.Exit(finalizados);
@@ -1036,8 +1037,9 @@ namespace MultiThread
                             TicReloj();
                             cpu += (reloj - inicioReloj);
                             cola.Guardar(PC, ref reg, cpu, ID);
-                            lines = "Se guardo Contexto del Hilillo " + ID;
+                            lines = "\nSe Termino el QUANTUM del Hilillo " + ID + "\n";
                             file.WriteLine(lines);
+                            Console.Write(lines);
                             Monitor.Exit(cola);
                         }
                     }
@@ -1053,7 +1055,7 @@ namespace MultiThread
 
     public class Contextos
     {
-        private static Queue queue;
+        private Queue queue;
         private int contador;
         private struct Contexto // C# mantiene los struct
         {
@@ -1126,7 +1128,7 @@ namespace MultiThread
 
         }//FIN de Guardar
 
-        public void Sacar(out int p, ref int[] reg, ref int relojActual, ref int id)  // Retorna el contexto
+        public void Sacar(ref int p, ref int[] reg, ref int relojActual, ref int id)  // Retorna el contexto
         {
             Contexto aux = (Contexto)queue.Dequeue();
             for (int i = 1; i < 32; ++i)
