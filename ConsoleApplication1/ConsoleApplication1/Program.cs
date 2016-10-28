@@ -851,7 +851,7 @@ namespace MultiThread
                                     }
                                     if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
                                     {
-                                        cacheDatos1[palabra, posicion] = rf2;  // Registro donde viene
+                                        cacheDatos1[palabra, posicion] = reg[rf2];  // Registro donde viene
 
                                     }                                    
                                     memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
@@ -919,7 +919,7 @@ namespace MultiThread
                                     }
                                     if ((bloque == cacheDatos2[4, posicion]) && (cacheDatos2[5, posicion] == 1))
                                     {
-                                        cacheDatos2[palabra, posicion] = rf2; // Registro donde viene
+                                        cacheDatos2[palabra, posicion] = reg[rf2]; // Registro donde viene
 
                                     }
                                     
@@ -988,7 +988,7 @@ namespace MultiThread
                                     }
                                     if ((bloque == cacheDatos3[4, posicion]) && (cacheDatos3[5, posicion] == 1))
                                     {
-                                        cacheDatos3[palabra, posicion] = rf2; // Registro donde viene
+                                        cacheDatos3[palabra, posicion] = reg[rf2]; // Registro donde viene
 
                                     }
                                     
