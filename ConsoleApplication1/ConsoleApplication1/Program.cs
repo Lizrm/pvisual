@@ -849,17 +849,16 @@ namespace MultiThread
                                             }
                                         }
                                     }
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
+                                    FallodeCache(7);
+                                    Monitor.Exit(busD);
                                     if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
                                     {
                                         cacheDatos1[palabra, posicion] = reg[rf2];  // Registro donde viene
 
-                                    }                                    
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
+                                    } 
                                     lines = "Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "  Registro: " + rf2;
                                     file.WriteLine(lines);
-                                   // Console.ReadKey();
-                                    FallodeCache(7);
-                                    Monitor.Exit(busD);
                                     Monitor.Exit(cacheDatos1);
                                     break;
 
@@ -917,18 +916,16 @@ namespace MultiThread
                                             }
                                         }
                                     }
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
+                                    FallodeCache(7);
+                                    Monitor.Exit(busD);
                                     if ((bloque == cacheDatos2[4, posicion]) && (cacheDatos2[5, posicion] == 1))
                                     {
                                         cacheDatos2[palabra, posicion] = reg[rf2]; // Registro donde viene
 
-                                    }
-                                    
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene                                     
+                                    }                                
                                     lines = "CASO 2 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + " Registro: " + rf2;
                                     file.WriteLine(lines);
-                                    //Console.ReadKey();
-                                    FallodeCache(7);
-                                    Monitor.Exit(busD);
                                     Monitor.Exit(cacheDatos2);  //sino es la 1
                                     break;
 
@@ -986,18 +983,17 @@ namespace MultiThread
                                             }
                                         }
                                     }
+
+                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
+                                    FallodeCache(7);
+                                    Monitor.Exit(busD);
                                     if ((bloque == cacheDatos3[4, posicion]) && (cacheDatos3[5, posicion] == 1))
                                     {
                                         cacheDatos3[palabra, posicion] = reg[rf2]; // Registro donde viene
 
-                                    }
-                                    
-                                    memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene                                    
+                                    }                                  
                                     lines = "CASO 3 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] +  "Registro: " + rf2;
-                                    file.WriteLine(lines);
-                                   // Console.ReadKey();
-                                    FallodeCache(7);
-                                    Monitor.Exit(busD);
+                                    file.WriteLine(lines); 
                                     Monitor.Exit(cacheDatos3);  //sino es la 1
                                     break;
                             }
