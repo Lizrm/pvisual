@@ -663,15 +663,14 @@ namespace MultiThread
 
                                         if (RL1 != direcc)
                                         {
-                                            reg[rf2] = 0;
-                                            Monitor.Exit(cacheDatos1);
+                                            reg[rf2] = 0;                                            
                                             sc1 = true;
                                         }
                                         else
                                         {
                                             if (!Monitor.TryEnter(busD))
                                             {
-                                                Monitor.Exit(cacheDatos1); 
+                                                Monitor.Exit(cacheDatos1);
                                                 TicReloj();
 
                                             }
@@ -681,7 +680,6 @@ namespace MultiThread
                                                 if (!Monitor.TryEnter(cacheDatos2))
                                                 {
                                                     Monitor.Exit(busD);
-                                                    Monitor.Exit(cacheDatos1);
                                                     TicReloj();
 
                                                 }
@@ -714,15 +712,16 @@ namespace MultiThread
                                                     }
                                                 }
                                             }
-                                        }
-                                        memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
-                                        FallodeCache(7);
-                                        Monitor.Exit(busD);
 
-                                        if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
-                                        {
-                                            cacheDatos1[palabra, posicion] = reg[rf2];  // Registro donde viene
+                                            memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
+                                            FallodeCache(7);
+                                            Monitor.Exit(busD);
 
+                                            if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
+                                            {
+                                                cacheDatos1[palabra, posicion] = reg[rf2];  // Registro donde viene
+
+                                            }
                                         }
                                         Monitor.Exit(cacheDatos1);
                                     }                                        
@@ -740,8 +739,7 @@ namespace MultiThread
 
                                         if (RL2 != direcc)
                                         {
-                                            reg[rf2] = 0;
-                                            Monitor.Exit(cacheDatos2);
+                                            reg[rf2] = 0;                                            
                                             sc2 = true;
                                         }
                                         else
@@ -791,16 +789,16 @@ namespace MultiThread
                                                     }
                                                 }
                                             }
-                                        }
-                                        memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
-                                        FallodeCache(7);
-                                        Monitor.Exit(busD);
-                                        if ((bloque == cacheDatos2[4, posicion]) && (cacheDatos2[5, posicion] == 1))
-                                        {
-                                            cacheDatos2[palabra, posicion] = reg[rf2]; // Registro donde viene
 
-                                        }
+                                            memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
+                                            FallodeCache(7);
+                                            Monitor.Exit(busD);
+                                            if ((bloque == cacheDatos2[4, posicion]) && (cacheDatos2[5, posicion] == 1))
+                                            {
+                                                cacheDatos2[palabra, posicion] = reg[rf2]; // Registro donde viene
 
+                                            }
+                                        }
                                         Monitor.Exit(cacheDatos2);
                                     }                                        
                                     break;
@@ -817,7 +815,6 @@ namespace MultiThread
                                         if (RL3 != direcc)
                                         {
                                             reg[rf2] = 0;
-                                            Monitor.Exit(cacheDatos3);
                                             sc3 = true;
                                         }
                                         else
@@ -866,15 +863,15 @@ namespace MultiThread
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
-                                        FallodeCache(7);
-                                        Monitor.Exit(busD);
-                                        if ((bloque == cacheDatos3[4, posicion]) && (cacheDatos3[5, posicion] == 1))
-                                        {
-                                            cacheDatos3[palabra, posicion] = reg[rf2]; // Registro donde viene
+                                            memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene 
+                                            FallodeCache(7);
+                                            Monitor.Exit(busD);
+                                            if ((bloque == cacheDatos3[4, posicion]) && (cacheDatos3[5, posicion] == 1))
+                                            {
+                                                cacheDatos3[palabra, posicion] = reg[rf2]; // Registro donde viene
 
+                                            }
                                         }
                                         Monitor.Exit(cacheDatos3);
                                     }                                          
@@ -889,7 +886,7 @@ namespace MultiThread
                             posicion = bloque % 4;
                             palabra = (dir % 16) / 4;     // Calculo de bloque y palabra
 
-                            Console.Write("LW: " + bloque + "\n");
+                           // Console.Write("LW: " + bloque + "\n");
 
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
