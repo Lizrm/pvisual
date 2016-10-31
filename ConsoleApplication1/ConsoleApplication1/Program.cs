@@ -24,10 +24,63 @@ namespace MultiThread
         public static int[] busD;                 // Bus de datos
         public static int[] busI;                 // Bus de instrucciones
         public static int llegan = 4;             // Variable para el uso de la barrera
+        public static int enter;
+        public static bool lento;
+        public static int[] vector;
 
         static Barrier barrier = new Barrier(llegan, (bar) =>  //Barrera de sincronizacion, lo que esta dentro se ejecuta una sola vez
         {
             reloj++;
+
+            if (lento)
+            {
+                if (enter == reloj)
+                {
+
+                    Console.Write("\nReloj: " + reloj + "\n");
+                    for (int i = 1; i<= 3; ++i)
+                    {
+                        Console.Write("En el nucleo "+ i + " Corre el hilillo: " + vector[i-1] + "\n");
+                    }
+
+                    Console.Write("\nCache de Datos 1: \n");
+                    for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 1
+                    {
+                        for (int j = 0; j < 4; ++j)
+                        {
+                            Console.Write(cacheDatos1[i, j] + "  ");
+                        }
+                        Console.Write("\n");
+                    }
+
+                    Console.Write("\nCache de Datos 2: \n");
+                    for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 2
+                    {
+                        for (int j = 0; j < 4; ++j)
+                        {
+                            Console.Write(cacheDatos2[i, j] + "  ");
+                        }
+                        Console.Write("\n");
+                    }
+
+                    Console.Write("\nCache de Datos 3: \n");
+                    for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 3
+                    {
+                        for (int j = 0; j < 4; ++j)
+                        {
+                            Console.Write(cacheDatos3[i, j] + "  ");
+                        }
+                        Console.Write("\n");
+                    }
+
+
+                    enter += 1000;
+                    Console.ReadKey();
+                    
+                }
+            }
+            
+           
            // Console.WriteLine("Tic de reloj");
         }); //FIN de la Barrera
 
@@ -57,6 +110,8 @@ namespace MultiThread
             cola = new Contextos();
             finalizados = new Contextos();
 
+            vector = new int[3];
+
             busD = new int[1];              // Inicializacion del Bus de Datos
             busI = new int[1];              // Inicializacion del Bus de Instrucciones
 
@@ -67,6 +122,9 @@ namespace MultiThread
 
             //*************Bloque de inicializacion******************//
             reloj = 0;
+            enter = 40;
+            lento = false;
+
             for (int i = 0; i < 96; ++i)    // Memoria principal inicilizada en uno
             {
                 memDatos[i] = 1;        
@@ -102,6 +160,12 @@ namespace MultiThread
             quantumTotal = int.Parse(Console.ReadLine());
             Console.Write("\nIngrese el numero de hilillos Totales \n");
             total = int.Parse(Console.ReadLine());
+            Console.Write("\nIngrese un 1 si desea visualizar la ejecucion \n");
+            if ( 1 == (int.Parse(Console.ReadLine())))
+            {
+                lento = true;
+            }
+
 
             /*****Leer de archivos*******/
             int index = 0;
@@ -301,7 +365,7 @@ namespace MultiThread
                         }
                         TicReloj();
                         RL1 = -1;
-                        Monitor.Exit(RL1);
+                        Monitor.Exit(cacheDatos1);
                         break;
 
                     case 2:
@@ -311,7 +375,7 @@ namespace MultiThread
                         }
                         TicReloj();
                         RL2 = -1;
-                        Monitor.Exit(RL2);
+                        Monitor.Exit(cacheDatos2);
                         break;
 
                     case 3:
@@ -321,7 +385,7 @@ namespace MultiThread
                         }
                         TicReloj();
                         RL3 = -1;
-                        Monitor.Exit(RL3);
+                        Monitor.Exit(cacheDatos3);
                         break;
                 }
                 
@@ -331,8 +395,7 @@ namespace MultiThread
                 Monitor.Exit(cola);
                 quantum = q;
 
-                Console.WriteLine("\nID del hilillo a ejecutar:\t" + ID + "\n");
-                file.WriteLine("\nID del hilillo a ejecutar:\t" + ID + "\n");
+                vector[(int.Parse(Thread.CurrentThread.Name)) - 1] = ID;
 
 
                 while (quantum > 0)
@@ -816,14 +879,15 @@ namespace MultiThread
                             }
                             break;
                                                    
-                        case 35: //LW
-
-                            lines = "Hace caso 35: LW";
-                            file.WriteLine(lines);
+                        case 35: //LW                            
+                            
                             int dir = reg[rf1] + rd;
                             bloque = dir / 16;
                             posicion = bloque % 4;
                             palabra = (dir % 16) / 4;     // Calculo de bloque y palabra
+
+                            Console.Write("LW: " + bloque + "\n");
+
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
                                 case 1:
@@ -846,7 +910,7 @@ namespace MultiThread
                                             {
                                                 conseguido = true;
                                                 TicReloj();
-                                                inicioBloque = bloque * 4;    //inicio del bloque a copiar
+                                                inicioBloque = bloque * 4;    //inicio del bloque a copiar en mi memoria de datos
 
                                                 for (int i = 0; i < 4; ++i) //Copia los datos de memoria a Cache
                                                 {
@@ -856,9 +920,10 @@ namespace MultiThread
                                                 cacheDatos1[4, posicion] = bloque;
                                                 cacheDatos1[5, posicion] = 1;
                                                 FallodeCache(28);
+                                                Monitor.Exit(busD);
+
                                                 lines = "Fallo de cache";
-                                                file.WriteLine(lines);
-                                                Monitor.Exit(busD);                                               
+                                                file.WriteLine(lines);                                                                                              
                                             }
                                         }
                                         else
@@ -902,9 +967,9 @@ namespace MultiThread
                                                 cacheDatos2[4, posicion] = bloque;
                                                 cacheDatos2[5, posicion] = 1;
                                                 FallodeCache(28);
+                                                Monitor.Exit(busD);
                                                 lines = "Fallo de cache";
-                                                file.WriteLine(lines);
-                                                Monitor.Exit(busD);                                                
+                                                file.WriteLine(lines);                                                                                               
                                             }
                                         }
                                         else
@@ -948,9 +1013,10 @@ namespace MultiThread
                                                 cacheDatos3[4, posicion] = bloque;
                                                 cacheDatos3[5, posicion] = 1;
                                                 FallodeCache(28);
+                                                Monitor.Exit(busD);
+
                                                 lines = "Fallo de cache";
-                                                file.WriteLine(lines);
-                                                Monitor.Exit(busD);                                          
+                                                file.WriteLine(lines);                                                                                          
                                             }
                                         }
                                         else
