@@ -24,7 +24,7 @@ namespace MultiThread
         public static int[] busD;                 // Bus de datos
         public static int[] busI;                 // Bus de instrucciones
         public static int llegan = 4;             // Variable para el uso de la barrera
-        public static int enter;
+        public static int enter, frecuencia;
         public static bool lento;
         public static int[] vector;
 
@@ -74,7 +74,7 @@ namespace MultiThread
                     }
 
 
-                    enter += 1000;
+                    enter += frecuencia;
                     Console.ReadKey();
                     
                 }
@@ -122,7 +122,6 @@ namespace MultiThread
 
             //*************Bloque de inicializacion******************//
             reloj = 0;
-            enter = 40;
             lento = false;
 
             for (int i = 0; i < 96; ++i)    // Memoria principal inicilizada en uno
@@ -164,8 +163,12 @@ namespace MultiThread
             if ( 1 == (int.Parse(Console.ReadLine())))
             {
                 lento = true;
+                Console.Write("\nIngrese la frecuencia de ciclos de reloj a visualizar \n");
+                frecuencia = int.Parse(Console.ReadLine());
+                enter = frecuencia;
             }
 
+            Console.Write("\nEjecutando hilillos porfavor espere\n");
 
             /*****Leer de archivos*******/
             int index = 0;
