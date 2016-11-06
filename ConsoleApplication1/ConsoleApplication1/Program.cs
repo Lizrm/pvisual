@@ -1,3 +1,9 @@
+/*  Adriana Mora Calvo        B24385
+    Lisbeth Rojas Montero     B15745
+    Para correr el programa se debe de poner los archivos de los hilos en la carpeta bin
+    Al terminar la ejecución del programa los archivos de cada núcleo se encuentran en la carpeta bin
+    Leer la documentación externa para intormación más detallada
+    */
 using System;
 using System.Threading;
 using System.IO;
@@ -36,13 +42,13 @@ namespace MultiThread
             {
                 if (enter == reloj)
                 {
-
                     Console.Write("\nReloj: " + reloj + "\n");
                     for (int i = 1; i<= 3; ++i)
                     {
                         Console.Write("En el nucleo "+ i + " Corre el hilillo: " + vector[i-1] + "\n");
+                        // Cual hilo corre en cada nucleo
                     }
-
+                    
                     Console.Write("\nCache de Datos 1: \n");
                     for (int i = 0; i < 6; ++i)                             //Imprime la cahe de datos 1
                     {
@@ -78,9 +84,8 @@ namespace MultiThread
                     Console.ReadKey();
                     
                 }
-            }
-            
-           
+            }    
+      
            // Console.WriteLine("Tic de reloj");
         }); //FIN de la Barrera
 
@@ -96,10 +101,6 @@ namespace MultiThread
                 TicReloj();                             // Tick de reloj
             }
         }//FIN de Fallo de Cache
-
-
-
-
 
         static void Main()
         {
@@ -154,16 +155,16 @@ namespace MultiThread
                 }
             }
             //*****************Fin de Bloque*************************//
-            // Se pideal usuario los datos para correr el programa
+            // Se pide al usuario los datos para correr el programa
             Console.Write("Ingrese el quantum \n");
             quantumTotal = int.Parse(Console.ReadLine());                   // Quantum de cada hilillo
-            Console.Write("\nIngrese el numero de hilillos Totales \n");    // Cantidad de hilos a correr
+            Console.Write("\nIngrese el numero de hilillos Totales \n");    // Cantidad de hilos a correr (max 8 hilos)
             total = int.Parse(Console.ReadLine());
             Console.Write("\nIngrese un 1 si desea visualizar la ejecucion \n");  // Opciones de visualizacion de la ejecucion
             if ( 1 == (int.Parse(Console.ReadLine())))
             {
                 lento = true;
-                Console.Write("\nIngrese la frecuencia de ciclos de reloj a visualizar \n");
+                Console.Write("\nIngrese la frecuencia de ciclos de reloj a visualizar \n");  // Cada cuantos ciclos de reloj se haran las impresiones
                 frecuencia = int.Parse(Console.ReadLine());
                 enter = frecuencia;
             }
@@ -205,7 +206,6 @@ namespace MultiThread
              thread1.Start();
              thread2.Start();
              thread3.Start();
-
 
              // Verificar que todos los hilillos finalizaron
              int cardinalidad;
@@ -284,12 +284,6 @@ namespace MultiThread
            
         }// FIN de Main
 
-
-
-
-
-
-
         public static void Nucleos(int q) // Quantum
         {
             /**Bloque de Declaracion**/
@@ -330,7 +324,7 @@ namespace MultiThread
                     cacheInstruc[i][j] = 0;
                 }
             }
-            for (int i = 4; i < 6; ++i) // La validez de las caches se inicializadas en -1
+            for (int i = 4; i < 6; ++i) // La validez de las caches se inicializadas en -1 (invalidas)
             {
                 for (int j = 0; j < 4; ++j)
                 {
@@ -338,6 +332,7 @@ namespace MultiThread
                 }
             }
             //**************Fin bloque inicilaizacion****************//
+            
             while (true) // While que no deja que los hilos mueran
             {
                 bool vacia = true;
@@ -348,7 +343,7 @@ namespace MultiThread
                         TicReloj();
                     }
                     TicReloj();
-                    if (cola.Cantidad() > 0)
+                    if (cola.Cantidad() > 0)  // si hay elementos en la cola
                     {
                         vacia = false;
                     }
@@ -359,7 +354,7 @@ namespace MultiThread
                     
                 }
                                
-                switch (int.Parse(Thread.CurrentThread.Name)) //RL
+                switch (int.Parse(Thread.CurrentThread.Name)) // RL se inicializa en -1 porque no existe la direccion -1
                 {
                     case 1:
                         while (!Monitor.TryEnter(cacheDatos1))
@@ -436,45 +431,40 @@ namespace MultiThread
                         FallodeCache(28);
                         Monitor.Exit(busI);
                     } //Fin fallo de cache
-
+                    // Separación de las partes de la instruccion en variables para decodificarlas
                     iterador = posicion * 4;
-                    cop = cacheInstruc[palabra][iterador];
-                    rf1 = cacheInstruc[palabra][iterador + 1];
-                    rf2 = cacheInstruc[palabra][iterador + 2];
-                    rd = cacheInstruc[palabra][iterador + 3];  // Destino
+                    cop = cacheInstruc[palabra][iterador];          // Codigo de operacion
+                    rf1 = cacheInstruc[palabra][iterador + 1];      // Registro 1
+                    rf2 = cacheInstruc[palabra][iterador + 2];      // Registro 2
+                    rd = cacheInstruc[palabra][iterador + 3];       // Destino 
                     PC += 4;
-
+                    // Se debe tomar en uenta que no siempre el destino se usa como el destino de las operaciones (ver la codificación en la documentacion externa)
+                    
                     // Codificacion de las instrucciones recibidas
                     switch (cop) // cop es el codigo de operacion 		
                     {
 
                        case 8: //DADDI rf2 <------- rf1+ inm
-                            
                             reg[rf2] = reg[rf1] + rd;
                             break;
 
                         case 32: //DADD rd <------ rf1 + rf2
-                            
                             reg[rd] = reg[rf1] + reg[rf2];
                             break;
 
-                        case 34: //DSUB  rd <------- rf1 - rf2
-                           
+                        case 34: //DSUB  rd <------- rf1 - rf2 
                             reg[rd] = reg[rf1] - reg[rf2];                            
                             break;
 
                         case 12: //DMUL  rd <------ rf1 * rf2
-
                             reg[rd] = reg[rf1] * reg[rf2];
                             break;
 
                         case 14: //DIV  rd <------ rf1 / rf2
-
                             reg[rd] = reg[rf1] / reg[rf2];
                             break;
 
                         case 4: //BEZ si rf = 0 entonces SALTA
-
                             if (reg[rf1] == 0)
                             {
                                 PC += (rd * 4);
@@ -482,7 +472,6 @@ namespace MultiThread
                             break;
 
                         case 5: //BNEZ si rf z 0 o rf > 0 entonces SALTA
-                           
                             if (reg[rf1] != 0)
                             {
                                 PC += (rd * 4);
@@ -490,18 +479,15 @@ namespace MultiThread
                             break;
 
                         case 3: //JAL  reg 31 = PC
-                            
                             reg[31] = PC;
                             PC += rd;
                             break;
 
                         case 2:  //JR  PC = rf1
-
                             PC = reg[rf1];
                             break;
 
                         case 50: //LL
-
                             int dirr = reg[rf1] + rd;
                             bloque = dirr / 16;
                             posicion = bloque % 4;
@@ -880,7 +866,6 @@ namespace MultiThread
                             break;
                                                    
                         case 35: //LW                            
-                            
                             int dir = reg[rf1] + rd;
                             bloque = dir / 16;
                             posicion = bloque % 4;
@@ -1033,7 +1018,6 @@ namespace MultiThread
                             break;
 
                         case 43: //SW
-
                             lines = "Hace caso 43: SW";
                             file.WriteLine(lines);
                             int direccion = reg[rf1] + rd;
@@ -1094,7 +1078,7 @@ namespace MultiThread
                                                     TicReloj();
                                                     if (bloque == cacheDatos3[4, posicion])
                                                     {
-                                                        cacheDatos3[5, posicion] = -1;
+                                                        cacheDatos3[5, posicion] = -1; // Revisar el rl antes de invalidar
                                                         if (RL3== direccion){
                                                             RL3 = -1;
                                                         }   
@@ -1149,7 +1133,7 @@ namespace MultiThread
                                                 TicReloj();
                                                 if (bloque == cacheDatos1[4, posicion])
                                                 {
-                                                    cacheDatos1[5, posicion] = -1;
+                                                    cacheDatos1[5, posicion] = -1;  // Revisar el rl antes de invalidar
                                                     if (RL1== direccion){
                                                             RL1 = -1;
                                                         }   
@@ -1167,7 +1151,7 @@ namespace MultiThread
                                                     TicReloj();
                                                     if (bloque == cacheDatos3[4, posicion])
                                                     {
-                                                        cacheDatos3[5, posicion] = -1;
+                                                        cacheDatos3[5, posicion] = -1;  // Revisar el rl antes de invalidar
                                                         if (RL3== direccion){
                                                             RL3 = -1;
                                                         }   
@@ -1222,7 +1206,7 @@ namespace MultiThread
                                                 TicReloj();
                                                 if (bloque == cacheDatos1[4, posicion])
                                                 {
-                                                    cacheDatos1[5, posicion] = -1;
+                                                    cacheDatos1[5, posicion] = -1;  // Revisar el rl antes de invalidar
                                                     if (RL1== direccion){
                                                             RL1 = -1;
                                                         }   
@@ -1240,7 +1224,7 @@ namespace MultiThread
                                                     TicReloj();
                                                     if (bloque == cacheDatos2[4, posicion])
                                                     {
-                                                        cacheDatos2[5, posicion] = -1;
+                                                        cacheDatos2[5, posicion] = -1;  // Revisar el rl antes de invalidar
                                                         if (RL2== direccion){
                                                             RL2 = -1;
                                                         }   
@@ -1268,7 +1252,6 @@ namespace MultiThread
                             break;
 
                         case 63: //FIN
-                            
                             lines = "\nInstruccion de FIN del Hilillo: " + ID;
                             Console.Write(lines);
                             file.WriteLine(lines);
@@ -1287,9 +1270,9 @@ namespace MultiThread
                         }
                         TicReloj();
 
-                        cpu += (reloj - inicioReloj);   // Ciclos de reloj que duro el hilillo en ejecucion
-                        finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);
-                        lines = "\nSe guardo Finalizado el Hilillo " + ID + "\n";
+                        cpu += (reloj - inicioReloj);                                   // Ciclos de reloj que duro el hilillo en ejecucion
+                        finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);    // Se guarda en la cola de finalizados
+                        lines = "\nSe guardo Finalizado el Hilillo " + ID + "\n";       // Guardar en el archivo de los nucleos la finalizacion del hilo
                         file.WriteLine(lines);
                         Console.Write(lines);
                         Monitor.Exit(finalizados);
@@ -1304,8 +1287,8 @@ namespace MultiThread
                             }
                             TicReloj();
                             cpu += (reloj - inicioReloj);
-                            cola.Guardar(PC, ref reg, cpu, ID);
-                            lines = "\nSe Termino el QUANTUM del Hilillo " + ID + "\n";
+                            cola.Guardar(PC, ref reg, cpu, ID);                             // Se guarda en la cola de los que todavia les falta correr
+                            lines = "\nSe Termino el QUANTUM del Hilillo " + ID + "\n";     // Guardar en el archivo de nucleos a cual hilo se leacabo el quantum
                             file.WriteLine(lines);
                             Console.Write(lines);
                             Monitor.Exit(cola);
@@ -1326,7 +1309,7 @@ namespace MultiThread
         private Queue queue;
         private int contador;
         private struct Contexto // C# mantiene los struct
-        {
+        {   // Varables para poder almacenas los contextos cuando se le acabe el quantum a cada hilo
             public int pc;
             public int[] regist;
             public int relojCPU;
@@ -1422,7 +1405,7 @@ namespace MultiThread
 
         }//FIN de cantidad
 
-        public void GuardarFinalizados(int p, ref int[] reg, int cpu, int total, int id)
+        public void GuardarFinalizados(int p, ref int[] reg, int cpu, int total, int id) // Guarda los hilos ya finalizados
         {
             Contexto nueva = new Contexto(p, ref reg, cpu, total, id);
             queue.Enqueue(nueva);
@@ -1431,7 +1414,7 @@ namespace MultiThread
 
         public void Imprimir()
         {
-            while(0 < contador)
+            while(0 < contador)  // Impresiones de tiempos
             {
                 Contexto aux = (Contexto)queue.Dequeue();
                 contador--;
