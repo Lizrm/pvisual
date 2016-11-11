@@ -675,7 +675,8 @@ namespace MultiThread
                                                     if (bloque == cacheDatos2[4, posicion])
                                                     {
                                                         cacheDatos2[5, posicion] = -1;  // Invalido cache
-                                                        if (RL2== direccion){
+                                                        if (RL2 == direccion)
+                                                        {
                                                             RL2 = -1;
                                                         } 
                                                     }
@@ -693,9 +694,10 @@ namespace MultiThread
                                                         if (bloque == cacheDatos3[4, posicion])
                                                         {
                                                             cacheDatos3[5, posicion] = -1;  // Invalido cache
-                                                            if (RL3== direccion){
-                                                            RL3 = -1;
-                                                        } 
+                                                            if (RL3 == direccion)
+                                                            {
+                                                                RL3 = -1;
+                                                            } 
                                                         }
                                                         Monitor.Exit(cacheDatos3);
                                                         sc1 = true;
@@ -756,7 +758,8 @@ namespace MultiThread
                                                     if (bloque == cacheDatos1[4, posicion])
                                                     {
                                                         cacheDatos1[5, posicion] = -1;  // Invalido cache
-                                                        if (RL1== direccion){
+                                                        if (RL1 == direccion)
+                                                        {
                                                             RL1 = -1;
                                                         } 
                                                     }
@@ -774,9 +777,10 @@ namespace MultiThread
                                                         if (bloque == cacheDatos3[4, posicion])
                                                         {
                                                             cacheDatos3[5, posicion] = -1;  // Invalido cache
-                                                            if (RL3== direccion){
-                                                            RL3 = -1;
-                                                        } 
+                                                            if (RL3 == direccion)
+                                                            {
+                                                                RL3 = -1;
+                                                            } 
                                                         }
                                                         Monitor.Exit(cacheDatos3);
                                                         sc2 = true;
@@ -834,7 +838,8 @@ namespace MultiThread
                                                     if (bloque == cacheDatos1[4, posicion])
                                                     {
                                                         cacheDatos1[5, posicion] = -1;  // Invalido cache
-                                                        if (RL1== direccion){
+                                                        if (RL1 == direccion)
+                                                        {
                                                             RL1 = -1;
                                                         } 
                                                     }
@@ -852,9 +857,10 @@ namespace MultiThread
                                                         if (bloque == cacheDatos2[4, posicion])
                                                         {
                                                             cacheDatos2[5, posicion] = -1;  // Invalido cache
-                                                            if (RL2== direccion){
-                                                            RL2 = -1;
-                                                        } 
+                                                            if (RL2 == direccion)
+                                                            {
+                                                                RL2 = -1;
+                                                            } 
                                                         }
                                                         Monitor.Exit(cacheDatos2);
                                                         sc3 = true;
@@ -1073,7 +1079,8 @@ namespace MultiThread
                                                 if (bloque == cacheDatos2[4, posicion])
                                                 {
                                                     cacheDatos2[5, posicion] = -1;  // Revisar el rl antes de invalidar
-                                                    if (RL2== direccion){
+                                                    if (RL2 == direccion)
+                                                    {
                                                         RL2 = -1;
                                                     }
                                                 }
@@ -1091,7 +1098,8 @@ namespace MultiThread
                                                     if (bloque == cacheDatos3[4, posicion])
                                                     {
                                                         cacheDatos3[5, posicion] = -1; // Revisar el rl antes de invalidar
-                                                        if (RL3== direccion){
+                                                        if (RL3 == direccion)
+                                                        {
                                                             RL3 = -1;
                                                         }   
                                                     }
@@ -1146,9 +1154,10 @@ namespace MultiThread
                                                 if (bloque == cacheDatos1[4, posicion])
                                                 {
                                                     cacheDatos1[5, posicion] = -1;  // Revisar el rl antes de invalidar
-                                                    if (RL1== direccion){
-                                                            RL1 = -1;
-                                                        }   
+                                                    if (RL1 == direccion)
+                                                    {
+                                                        RL1 = -1;
+                                                    }   
                                                 }
                                                 Monitor.Exit(cacheDatos1);
 
@@ -1164,7 +1173,8 @@ namespace MultiThread
                                                     if (bloque == cacheDatos3[4, posicion])
                                                     {
                                                         cacheDatos3[5, posicion] = -1;  // Revisar el rl antes de invalidar
-                                                        if (RL3== direccion){
+                                                        if (RL3 == direccion)
+                                                        {
                                                             RL3 = -1;
                                                         }   
                                                     }
@@ -1219,9 +1229,10 @@ namespace MultiThread
                                                 if (bloque == cacheDatos1[4, posicion])
                                                 {
                                                     cacheDatos1[5, posicion] = -1;  // Revisar el rl antes de invalidar
-                                                    if (RL1== direccion){
-                                                            RL1 = -1;
-                                                        }   
+                                                    if (RL1 == direccion)
+                                                    {
+                                                        RL1 = -1;
+                                                    }   
                                                 }
                                                 Monitor.Exit(cacheDatos1);
 
@@ -1237,7 +1248,8 @@ namespace MultiThread
                                                     if (bloque == cacheDatos2[4, posicion])
                                                     {
                                                         cacheDatos2[5, posicion] = -1;  // Revisar el rl antes de invalidar
-                                                        if (RL2== direccion){
+                                                        if (RL2 == direccion)
+                                                        {
                                                             RL2 = -1;
                                                         }   
                                                     }
