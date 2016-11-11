@@ -675,7 +675,9 @@ namespace MultiThread
                                                     if (bloque == cacheDatos2[4, posicion])
                                                     {
                                                         cacheDatos2[5, posicion] = -1;  // Invalido cache
-                                                        RL2 = -1;                       // Invalido RL
+                                                        if (RL2== direccion){
+                                                            RL2 = -1;
+                                                        } 
                                                     }
                                                     Monitor.Exit(cacheDatos2);
 
@@ -691,7 +693,9 @@ namespace MultiThread
                                                         if (bloque == cacheDatos3[4, posicion])
                                                         {
                                                             cacheDatos3[5, posicion] = -1;  // Invalido cache
-                                                            RL3 = -1;                       // Invalido RL
+                                                            if (RL3== direccion){
+                                                            RL3 = -1;
+                                                        } 
                                                         }
                                                         Monitor.Exit(cacheDatos3);
                                                         sc1 = true;
@@ -752,7 +756,9 @@ namespace MultiThread
                                                     if (bloque == cacheDatos1[4, posicion])
                                                     {
                                                         cacheDatos1[5, posicion] = -1;  // Invalido cache
-                                                        RL1 = -1;                       // Invalido RL
+                                                        if (RL1== direccion){
+                                                            RL1 = -1;
+                                                        } 
                                                     }
                                                     Monitor.Exit(cacheDatos1);
 
@@ -768,7 +774,9 @@ namespace MultiThread
                                                         if (bloque == cacheDatos3[4, posicion])
                                                         {
                                                             cacheDatos3[5, posicion] = -1;  // Invalido cache
-                                                            RL3 = -1;                       // Invalido RL
+                                                            if (RL3== direccion){
+                                                            RL3 = -1;
+                                                        } 
                                                         }
                                                         Monitor.Exit(cacheDatos3);
                                                         sc2 = true;
@@ -826,7 +834,9 @@ namespace MultiThread
                                                     if (bloque == cacheDatos1[4, posicion])
                                                     {
                                                         cacheDatos1[5, posicion] = -1;  // Invalido cache
-                                                        RL1 = -1;                       // Invalido RL
+                                                        if (RL1== direccion){
+                                                            RL1 = -1;
+                                                        } 
                                                     }
                                                     Monitor.Exit(cacheDatos1);
 
@@ -842,7 +852,9 @@ namespace MultiThread
                                                         if (bloque == cacheDatos2[4, posicion])
                                                         {
                                                             cacheDatos2[5, posicion] = -1;  // Invalido cache
-                                                            RL2 = -1;                       // Invalido RL
+                                                            if (RL2== direccion){
+                                                            RL2 = -1;
+                                                        } 
                                                         }
                                                         Monitor.Exit(cacheDatos2);
                                                         sc3 = true;
