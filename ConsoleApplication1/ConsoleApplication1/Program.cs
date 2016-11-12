@@ -484,14 +484,14 @@ namespace MultiThread
                             int dirr = reg[rf1] + rd;
                             bloque = dirr / 16;
                             posicion = bloque % 4;
-                            palabra = (dirr % 16) / 4;     // Calculo de bloque y palabra
+                            palabra = (dirr % 16) / 4;     // Calculo palabra
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
                                 case 1:
                                     bool conseguido = false;
                                     while (!conseguido)
                                     {
-                                        while (!Monitor.TryEnter(cacheDatos1))    // Cambiar por mi cache
+                                        while (!Monitor.TryEnter(cacheDatos1))
                                         {
                                             TicReloj();
                                         }
@@ -500,7 +500,7 @@ namespace MultiThread
                                         {
                                             if (!Monitor.TryEnter(busD))
                                             {
-                                                Monitor.Exit(cacheDatos1); // Cambiar por mi cache de datos
+                                                Monitor.Exit(cacheDatos1);
                                                 TicReloj();
                                             }
                                             else
@@ -534,7 +534,7 @@ namespace MultiThread
                                     bool c2 = false;
                                     while (!c2)
                                     {
-                                        while (!Monitor.TryEnter(cacheDatos2))    // Cambiar por mi cache
+                                        while (!Monitor.TryEnter(cacheDatos2))
                                         {
                                             TicReloj();
                                         }
@@ -543,7 +543,7 @@ namespace MultiThread
                                         {
                                             if (!Monitor.TryEnter(busD))
                                             {
-                                                Monitor.Exit(cacheDatos2); // Cambiar por mi cache de datos
+                                                Monitor.Exit(cacheDatos2); 
                                                 TicReloj();
                                             }
                                             else
@@ -878,9 +878,9 @@ namespace MultiThread
                                                    
                         case 35: //LW                            
                             int dir = reg[rf1] + rd;
-                            bloque = dir / 16;
+                            bloque = dir / 16;      //Calculo del bloque
                             posicion = bloque % 4;
-                            palabra = (dir % 16) / 4;     // Calculo de bloque y palabra
+                            palabra = (dir % 16) / 4;     
 
                             switch (int.Parse(Thread.CurrentThread.Name))
                             {
@@ -1293,7 +1293,7 @@ namespace MultiThread
     {
         private Queue queue;
         private int contador;
-        private struct Contexto // C# mantiene los struct
+        private struct Contexto
         {   // Varables para poder almacenas los contextos cuando se le acabe el quantum a cada hilo
             public int pc;
             public int[] regist;
@@ -1377,6 +1377,7 @@ namespace MultiThread
             contador--;
         }//FIN de Sacar
 
+        //Solo guarda el PC de cada hilillo, cuando se carga en memoria de instrucciones
         public void Encolar(int p, int id)
         {
             Contexto nueva = new Contexto(p, id);
@@ -1384,11 +1385,11 @@ namespace MultiThread
             contador++;
         }//FIN de Encolar
 
-        public int Cantidad()
+        public int Cantidad() //Cantidad decontextos en la cola
         {
             return contador;
 
-        }//FIN de cantidad
+        }//FIN de Cantidad
 
         public void GuardarFinalizados(int p, ref int[] reg, int cpu, int total, int id) // Guarda los hilos ya finalizados
         {
@@ -1399,7 +1400,7 @@ namespace MultiThread
 
         public void Imprimir()
         {
-            while(0 < contador)  // Impresiones de tiempos
+            while(0 < contador)  // Impresiones de tiempos y registros
             {
                 Contexto aux = (Contexto)queue.Dequeue();
                 contador--;
@@ -1410,7 +1411,6 @@ namespace MultiThread
                 }
                 Console.ReadKey();
             }            
-        }
-
+        }//FIN de Imprimir
     }//FIN de la clase Contextos
 }//FIN del namespace
