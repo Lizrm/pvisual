@@ -160,7 +160,7 @@ namespace MultiThread
             quantumTotal = int.Parse(Console.ReadLine());                   // Quantum de cada hilillo
             Console.Write("\nIngrese el numero de hilillos Totales \n");    // Cantidad de hilos a correr (max 8 hilos)
             total = int.Parse(Console.ReadLine());
-            Console.Write("\nIngrese un 1 si desea visualizar la ejecucion \n");  // Opciones de visualizacion de la ejecucion
+            Console.Write("\nIngrese un 1 si desea visualizar la ejecucion, de lo contrario otro numero\n");  // Opciones de visualizacion de la ejecucion
 
             if ( 1 == (int.Parse(Console.ReadLine())))
             {
@@ -1252,7 +1252,7 @@ namespace MultiThread
                             break;
 
                         case 63: //FIN                       
-                            Console.Write("\nInstruccion de FIN del Hilillo: " + ID);                            
+                            Console.Write("Instruccion de FIN del Hilillo: " + ID + "\n");                            
                             quantum = -1;  // Para tener el control de que la ultima instruccion fue FIN
                             break;
                     }
@@ -1283,7 +1283,7 @@ namespace MultiThread
                             TicReloj();
                             cpu += (reloj - inicioReloj);
                             cola.Guardar(PC, ref reg, cpu, ID);                             // Se guarda en la cola de los que todavia les falta correr                           
-                            Console.Write("\nSe Termino el QUANTUM del Hilillo " + ID + "\n");
+                            Console.Write("Se Termino el QUANTUM del Hilillo " + ID + "\n");
                             Monitor.Exit(cola);
                         }
                     }
