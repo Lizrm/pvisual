@@ -1,7 +1,7 @@
 /*  Adriana Mora Calvo        B24385
     Lisbeth Rojas Montero     B15745
     Para correr el programa se debe de poner los archivos de los hilos en la carpeta bin
-    Al terminar la ejecución del programa los archivos de cada núcleo se encuentran en la carpeta bin
+    Con el numero 1 se indica que se quiere visualizar la ejecucion, con cualquier otro numero se ejecuta en modo rapido
     Leer la documentación externa para intormación más detallada
     */
 using System;
