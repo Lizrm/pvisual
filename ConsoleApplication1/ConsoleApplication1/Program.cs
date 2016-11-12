@@ -161,6 +161,7 @@ namespace MultiThread
             Console.Write("\nIngrese el numero de hilillos Totales \n");    // Cantidad de hilos a correr (max 8 hilos)
             total = int.Parse(Console.ReadLine());
             Console.Write("\nIngrese un 1 si desea visualizar la ejecucion \n");  // Opciones de visualizacion de la ejecucion
+
             if ( 1 == (int.Parse(Console.ReadLine())))
             {
                 lento = true;
@@ -294,10 +295,8 @@ namespace MultiThread
             int bloque, posicion, palabra, iterador, quantum, inicioBloque; // Bloque es el bloque de memoria cache, quatum es el tiempo dado por el usuario
             int cpu;                                                        // Tic de reloj que dura un hilillo en ejecucion
             int inicioReloj;
-            int ID;                                                         //Es el numero identificador del hilillo
-            string lines;                                                   // lines es para poder meter en los archivos las impresiones
-            // Se crean los archivos para cada hilo
-            StreamWriter file = new StreamWriter("hilo" + Thread.CurrentThread.Name + ".txt");
+            int ID;                                                         //Es el numero identificador del hilillo           
+           
             /**Bloque de Creacion**/
             reg = new int[32];
             ID = -1;
@@ -609,9 +608,7 @@ namespace MultiThread
                                                 }
                                                 cacheDatos3[4, posicion] = bloque;
                                                 cacheDatos3[5, posicion] = 1;
-                                                FallodeCache(28);
-                                                lines = "Fallo de cache";
-                                                file.WriteLine(lines);
+                                                FallodeCache(28);  
                                                 Monitor.Exit(busD);
                                             }
                                         }
@@ -675,7 +672,7 @@ namespace MultiThread
                                                     if (bloque == cacheDatos2[4, posicion])
                                                     {
                                                         cacheDatos2[5, posicion] = -1;  // Invalido cache
-                                                        if (RL2 == direccion)
+                                                        if (RL2 == direcc)
                                                         {
                                                             RL2 = -1;
                                                         } 
@@ -694,7 +691,7 @@ namespace MultiThread
                                                         if (bloque == cacheDatos3[4, posicion])
                                                         {
                                                             cacheDatos3[5, posicion] = -1;  // Invalido cache
-                                                            if (RL3 == direccion)
+                                                            if (RL3 == direcc)
                                                             {
                                                                 RL3 = -1;
                                                             } 
@@ -758,7 +755,7 @@ namespace MultiThread
                                                     if (bloque == cacheDatos1[4, posicion])
                                                     {
                                                         cacheDatos1[5, posicion] = -1;  // Invalido cache
-                                                        if (RL1 == direccion)
+                                                        if (RL1 == direcc)
                                                         {
                                                             RL1 = -1;
                                                         } 
@@ -777,7 +774,7 @@ namespace MultiThread
                                                         if (bloque == cacheDatos3[4, posicion])
                                                         {
                                                             cacheDatos3[5, posicion] = -1;  // Invalido cache
-                                                            if (RL3 == direccion)
+                                                            if (RL3 == direcc)
                                                             {
                                                                 RL3 = -1;
                                                             } 
@@ -838,7 +835,7 @@ namespace MultiThread
                                                     if (bloque == cacheDatos1[4, posicion])
                                                     {
                                                         cacheDatos1[5, posicion] = -1;  // Invalido cache
-                                                        if (RL1 == direccion)
+                                                        if (RL1 == direcc)
                                                         {
                                                             RL1 = -1;
                                                         } 
@@ -857,7 +854,7 @@ namespace MultiThread
                                                         if (bloque == cacheDatos2[4, posicion])
                                                         {
                                                             cacheDatos2[5, posicion] = -1;  // Invalido cache
-                                                            if (RL2 == direccion)
+                                                            if (RL2 == direcc)
                                                             {
                                                                 RL2 = -1;
                                                             } 
@@ -923,10 +920,7 @@ namespace MultiThread
                                                 cacheDatos1[4, posicion] = bloque;
                                                 cacheDatos1[5, posicion] = 1;
                                                 FallodeCache(28);
-                                                Monitor.Exit(busD);
-
-                                                lines = "Fallo de cache";
-                                                file.WriteLine(lines);                                                                                              
+                                                Monitor.Exit(busD);                                                                    
                                             }
                                         }
                                         else
@@ -934,9 +928,7 @@ namespace MultiThread
                                             conseguido = true;
                                         }
                                     }
-                                    reg[rf2] = cacheDatos1[palabra, posicion];
-                                    lines = "CASO 1 rf2 tiene el dato" + reg[rf2];
-                                    file.WriteLine(lines);
+                                    reg[rf2] = cacheDatos1[palabra, posicion];                                    
                                     Monitor.Exit(cacheDatos1);
                                     break;
 
@@ -970,9 +962,7 @@ namespace MultiThread
                                                 cacheDatos2[4, posicion] = bloque;
                                                 cacheDatos2[5, posicion] = 1;
                                                 FallodeCache(28);
-                                                Monitor.Exit(busD);
-                                                lines = "Fallo de cache";
-                                                file.WriteLine(lines);                                                                                               
+                                                Monitor.Exit(busD);                                                                                             
                                             }
                                         }
                                         else
@@ -981,8 +971,6 @@ namespace MultiThread
                                         }
                                     }                                   
                                     reg[rf2] = cacheDatos2[palabra, posicion];  // Se le entrega el dato al registro
-                                    lines = "CASO 2 rf2 tiene el dato" + reg[rf2];
-                                    file.WriteLine(lines);
                                     Monitor.Exit(cacheDatos2);                  // Soltar mi cache                                                                 
                                     break;
 
@@ -1016,10 +1004,7 @@ namespace MultiThread
                                                 cacheDatos3[4, posicion] = bloque;
                                                 cacheDatos3[5, posicion] = 1;
                                                 FallodeCache(28);
-                                                Monitor.Exit(busD);
-
-                                                lines = "Fallo de cache";
-                                                file.WriteLine(lines);                                                                                          
+                                                Monitor.Exit(busD);                                                                                     
                                             }
                                         }
                                         else
@@ -1027,17 +1012,14 @@ namespace MultiThread
                                             c3 = true;
                                         }
                                     }
-                                    reg[rf2] = cacheDatos3[palabra, posicion];  // Se le entrega el dato al registro
-                                    lines = "CASO 1 rf2 tiene el dato" + reg[rf2];
-                                    file.WriteLine(lines);
+                                    reg[rf2] = cacheDatos3[palabra, posicion];  // Se le entrega el dato al registro                                  
                                     Monitor.Exit(cacheDatos3);                  // Soltar mi cache                                                                
                                     break;
                             }
                             break;
 
                         case 43: //SW
-                            lines = "Hace caso 43: SW";
-                            file.WriteLine(lines);
+
                             int direccion = reg[rf1] + rd;
                             bloque = direccion / 16;
                             posicion = bloque % 4;
@@ -1116,9 +1098,7 @@ namespace MultiThread
                                     {
                                         cacheDatos1[palabra, posicion] = reg[rf2];  // Registro donde viene
 
-                                    } 
-                                    lines = "Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + "  Registro: " + rf2;
-                                    file.WriteLine(lines);
+                                    }                                     
                                     Monitor.Exit(cacheDatos1);
                                     break;
 
@@ -1192,8 +1172,6 @@ namespace MultiThread
                                         cacheDatos2[palabra, posicion] = reg[rf2]; // Registro donde viene
 
                                     }                                
-                                    lines = "CASO 2 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] + " Registro: " + rf2;
-                                    file.WriteLine(lines);
                                     Monitor.Exit(cacheDatos2);  //sino es la 1
                                     break;
 
@@ -1267,18 +1245,14 @@ namespace MultiThread
                                     {
                                         cacheDatos3[palabra, posicion] = reg[rf2]; // Registro donde viene
 
-                                    }                                  
-                                    lines = "CASO 3 Datos: " + inicioBloque + " + " + palabra + " = " + reg[rf2] +  "Registro: " + rf2;
-                                    file.WriteLine(lines); 
+                                    }
                                     Monitor.Exit(cacheDatos3);  //sino es la 1
                                     break;
                             }
                             break;
 
-                        case 63: //FIN
-                            lines = "\nInstruccion de FIN del Hilillo: " + ID;
-                            Console.Write(lines);
-                            file.WriteLine(lines);
+                        case 63: //FIN                       
+                            Console.Write("\nInstruccion de FIN del Hilillo: " + ID);                            
                             quantum = -1;  // Para tener el control de que la ultima instruccion fue FIN
                             break;
                     }
@@ -1295,10 +1269,7 @@ namespace MultiThread
                         TicReloj();
 
                         cpu += (reloj - inicioReloj);                                   // Ciclos de reloj que duro el hilillo en ejecucion
-                        finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);    // Se guarda en la cola de finalizados
-                        lines = "\nSe guardo Finalizado el Hilillo " + ID + "\n";       // Guardar en el archivo de los nucleos la finalizacion del hilo
-                        file.WriteLine(lines);
-                        Console.Write(lines);
+                        finalizados.GuardarFinalizados(PC, ref reg, cpu, reloj, ID);    // Se guarda en la cola de finalizados                    
                         Monitor.Exit(finalizados);
                     }
                     else
@@ -1311,18 +1282,14 @@ namespace MultiThread
                             }
                             TicReloj();
                             cpu += (reloj - inicioReloj);
-                            cola.Guardar(PC, ref reg, cpu, ID);                             // Se guarda en la cola de los que todavia les falta correr
-                            lines = "\nSe Termino el QUANTUM del Hilillo " + ID + "\n";     // Guardar en el archivo de nucleos a cual hilo se leacabo el quantum
-                            file.WriteLine(lines);
-                            Console.Write(lines);
+                            cola.Guardar(PC, ref reg, cpu, ID);                             // Se guarda en la cola de los que todavia les falta correr                           
+                            Console.Write("\nSe Termino el QUANTUM del Hilillo " + ID + "\n");
                             Monitor.Exit(cola);
                         }
                     }
                     TicReloj();
-
                 }//FIN del quantum
-            }//FIN del while(true)
-            file.Close();
+            }//FIN del while(true) 
         } //FIN de Nucleos 
     }//FIN de la clase Nucleos
 
