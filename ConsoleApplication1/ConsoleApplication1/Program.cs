@@ -705,12 +705,12 @@ namespace MultiThread
                                             memDatos[inicioBloque + palabra] = reg[rf2]; // Registro donde viene
                                             FallodeCache(7);
                                             Monitor.Exit(busD);
-
                                             if ((bloque == cacheDatos1[4, posicion]) && (cacheDatos1[5, posicion] == 1))
                                             {
                                                 cacheDatos1[palabra, posicion] = reg[rf2];  // Registro donde viene
 
                                             }
+                                            RL1 = -1;
                                         }
                                         Monitor.Exit(cacheDatos1);
                                     }                                        
@@ -793,6 +793,7 @@ namespace MultiThread
                                                 cacheDatos2[palabra, posicion] = reg[rf2]; // Registro donde viene
 
                                             }
+                                            RL2 = -1;
                                         }
                                         Monitor.Exit(cacheDatos2);
                                     }                                        
@@ -873,6 +874,7 @@ namespace MultiThread
                                                 cacheDatos3[palabra, posicion] = reg[rf2]; // Registro donde viene
 
                                             }
+                                            RL3 = -1;
                                         }
                                         Monitor.Exit(cacheDatos3);
                                     }                                          
